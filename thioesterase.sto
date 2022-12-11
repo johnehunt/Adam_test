@@ -1,0 +1,125 @@
+# STOCKHOLM 1.0
+#=GF ID   Thioesterase
+#=GF AC   PF00975.23
+#=GF DE   Thioesterase domain
+#=GF AU   Finn RD;0000-0001-8626-2148
+#=GF AU   Bateman A;0000-0002-6982-4660
+#=GF SE   Pfam-B_180 (release 3.0)
+#=GF GA   26.40 26.40;
+#=GF TC   26.40 26.40;
+#=GF NC   26.30 26.30;
+#=GF BM   hmmbuild HMM.ann SEED.ann
+#=GF SM   hmmsearch -Z 61295632 -E 1000 --cpu 4 HMM pfamseq
+#=GF TP   Domain
+#=GF CL   CL0028
+#=GF RN   [1]
+#=GF RM   9560421
+#=GF RT   Genetic evidence for a role of thioesterase domains, integrated
+#=GF RT   in or associated with peptide synthetases, in non-ribosomal
+#=GF RT   peptide biosynthesis in Bacillus subtilis. 
+#=GF RA   Schneider A, Marahiel MA; 
+#=GF RL   Arch Microbiol 1998;169:404-410.
+#=GF DR   INTERPRO; IPR001031;
+#=GF DR   SCOP; 1jmk; fa;
+#=GF DR   SO; 0000417; polypeptide_domain;
+#=GF CC   Peptide synthetases are involved in the non-ribosomal synthesis
+#=GF CC   of peptide antibiotics.  Next to the operons encoding these
+#=GF CC   enzymes, in almost all cases, are genes that encode proteins
+#=GF CC   that have similarity to the type II fatty acid thioesterases of
+#=GF CC   vertebrates.  There are also modules within the peptide
+#=GF CC   synthetases that also share this similarity. With respect to
+#=GF CC   antibiotic production, thioesterases are required for the
+#=GF CC   addition of the last amino acid to the peptide antibiotic,
+#=GF CC   thereby forming a cyclic antibiotic. Thioesterases
+#=GF CC   (non-integrated) have molecular masses of 25-29 kDa.
+#=GF SQ   18
+#=GS Q56949_YERPE/19-252     AC Q56949.1
+#=GS SRFAD_BACSU/14-234      AC Q08788.3
+#=GS SRFAD_BACSU/14-234      DR PDB; 2K2Q B; 14-234;
+#=GS SRFAD_BACSU/14-234      DR PDB; 2RON A; 14-234;
+#=GS A4F7P1_SACEN/2959-3166  AC A4F7P1.1
+#=GS SRFAC_BACSU/1059-1271   AC Q08787.2
+#=GS SRFAC_BACSU/1059-1271   DR PDB; 1JMK O; 19-231;
+#=GS SRFAC_BACSU/1059-1271   DR PDB; 1JMK C; 19-231;
+#=GS SRFAC_BACSU/1059-1271   DR PDB; 2VSQ A; 1059-1271;
+#=GS ENTF_ECOLI/1066-1287    AC P11454.3
+#=GS ENTF_ECOLI/1066-1287    DR PDB; 5JA2 A; 1066-1290;
+#=GS ENTF_ECOLI/1066-1287    DR PDB; 3TEJ B; 1066-1290;
+#=GS ENTF_ECOLI/1066-1287    DR PDB; 5JA1 A; 1066-1290;
+#=GS ENTF_ECOLI/1066-1287    DR PDB; 3TEJ A; 1066-1290;
+#=GS ENTF_ECOLI/1066-1287    DR PDB; 2ROQ A; 108-332;
+#=GS Q9I182_PSEAE/2171-2428  AC Q9I182.1
+#=GS B8NI04_ASPFN/1867-2102  AC B8NI04.1
+#=GS PKSR_BACSU/2234-2511    AC O31784.2
+#=GS ACVS_EMENI/3553-3767    AC P27742.2
+#=GS FAS_HUMAN/2242-2501     AC P49327.3
+#=GS FAS_HUMAN/2242-2501     DR PDB; 1XKT B; 2242-2501;
+#=GS FAS_HUMAN/2242-2501     DR PDB; 2PX6 B; 2242-2501;
+#=GS FAS_HUMAN/2242-2501     DR PDB; 2PX6 A; 2242-2501;
+#=GS FAS_HUMAN/2242-2501     DR PDB; 4Z49 A; 2242-2501;
+#=GS FAS_HUMAN/2242-2501     DR PDB; 3TJM A; 2242-2500;
+#=GS FAS_HUMAN/2242-2501     DR PDB; 1XKT A; 2242-2501;
+#=GS FAS_HUMAN/2242-2501     DR PDB; 4Z49 B; 2242-2501;
+#=GS FAS_CHICK/2243-2502     AC P12276.5
+#=GS V4HXA4_9ACTN/24-247     AC V4HXA4.1
+#=GS A4F7P6_SACEN/17-239     AC A4F7P6.1
+#=GS Q9HWG2_PSEAE/18-239     AC Q9HWG2.1
+#=GS MBTB_MYCTU/1190-1411    AC P9WQ63.1
+#=GS TESA_MYCTU/30-253       AC P9WQD5.1
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ D; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ H; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ A; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ C; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ B; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ E; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ G; 29-254;
+#=GS TESA_MYCTU/30-253       DR PDB; 6FVJ F; 29-254;
+#=GS Q9I156_PSEAE/8-230      AC Q9I156.1
+#=GS SAST_RAT/27-256         AC P08635.1
+Q56949_YERPE/19-252                AHLVMCPFAGG.SSSAFRHWQAEQLTD...CALSLVTWPGRDRLRHLEPLRSITQLAALLANELEASVSPDTPLLLAGHSMGAQVAFETCRLLEQR...GLAPQGLIISGCHAPHLHSERQLSHRDDAD..............FIAELIDIGG...CSPELRENQELMSLFLPLLRADFYATESYHYDS.......PDVCPPLRTP..........................ALLLCGSHDREASWQ..QVDA..............WRQWLSHVTG..PVVIDGDHFYPIQ.QARSFFTQIVRHFPHAF
+#=GR Q56949_YERPE/19-252     pAS   ...............................................................................*................................................................................................................................................................*.............................................*.......................
+SRFAD_BACSU/14-234                 TQLICFPFAGG.YSASFRPLHAFLQG...ECEMLAAEPPGHG.TNQTSAIEDLEELTDLYKQELNLRPDR..PFVLFGHSMGGMITFRLAQKLERE...GIFPQAVIISAIQPPHI.QRKKVSHLPDDQ..............FLDHIIQLGGM...PAELVENKEVMSFFLPSFRSDYRALEQFEL..........YDLAQIQSP..........................VHVFNGLDDKKCIRD....AEG..............WKKWAKDIT..FHQFDGGHMFLL...SQ..TEEVAERIFAIL
+#=GR SRFAD_BACSU/14-234      SS    EEEECS---TC.HHHHHHHHHHHH--...S-EEEEEE--SS-.-S---TTTHHHHHHHHCCTT------S..SEEEE--SS--HHHHHHHHHHHHH...H-SS-SEEEEECE-S--.-S---SS-TTHH..............HHHCC--TT--...--TTTHHHHCCTT--S-HHHHHHHHTS---..........S--TT--SS..........................EEEEEE-SS-SHHHH....HHH..............HCTT---TE..EEEEE---SHHH...HH..-HHHHHHHHHHH
+#=GR SRFAD_BACSU/14-234      pAS   ...............................................................................*................................................................................................................................................................*.............................................*.......................
+A4F7P1_SACEN/2959-3166             ..ICCAGTAAISGPHEFTRLAGALRG...IAPVRAVPQPGYE..EGEPLPSSMAAVAAVQADAVIRTQGDK.PFVVAGHSAGALMAYALATELLDR...GHPPRGVVLIDVYPP...GHQDAMNAWLEEL.............TATLFDRET........VRMDD....TRLTALGAYDRLTGQWR.............PRETGLP...........................TLLVSAGEPMGPWP...DDS..............WKPTWPFEHD..TVAVPGDHFTMVQ..EH..ADAIARHIDAWL
+#=GR A4F7P1_SACEN/2959-3166  pAS   ...............................................................................*......................................................................................................................................................................................................................................
+SRFAC_BACSU/1059-1271              QIIFAFPPVLG.YGLMYQNLSSRLPSY.KLCAFDFIEEEDR...............LDRYADLIQKLQPEG.PLTLFGYSAGCSLAFEAAKKLEEQ...GRIVQRIIMVDSYKKQG.VSDLDGRTVESD..............VEALMNVNRDN..EALNSEAVKHGLKQKTHAFYSYYVNLISTG.............QVKADID.........................LLTSGADFDMPEWLASWEEATTG............VYRVKRGFGTH..AEMLQGETLDRNA.......EILLEFLNTQT
+#=GR SRFAC_BACSU/1059-1271   SS    EEEEEE--TT-.BGGGGHHHHHH-TTE.EEEEEB---STTH...............HHHHHHHHHHH--SS.-EEEEEETTHHHHHHHHHHHHHHT...T--EEEEEEES--EE-S.----TT--HHHH..............HHHHHTTTTT-..CGGGCHHHHHHHHHHHHHHHHHHHH----S.............-BSSEEE.........................EEE-SS-----TTEE-SGGGBSS............-EEEEE-SS-G..GGTTSHHHHHHHH.......HHHHHHHT-B-
+#=GR SRFAC_BACSU/1059-1271   pAS   ...............................................................................*......................................................................................................................................................................................................................................
+#=GR SRFAC_BACSU/1059-1271   sAS   .............................................................................................................*......................................................................................................................................................................*.................................
+ENTF_ECOLI/1066-1287               PTLFCFHPASG.FAWQFSVLSRYLDPQ...WSIIGIQSPRPN..GPMQTAANLDEVCEAHLATLLEQQPHG.PYYLLGYSLGGTLAQGIAARLRAR...GEQVAFLGLLDTWPPETQNWQEKEANGLDPE.............VLAEINREREAFLAAQQGSTSTELFTTIEGNYADAVRLLTTAH.............SVPFDGK..........................ATLFVAERTLQEGMS....PER.............AWSPWIAELD..IYRQDCAHVDIIS.......PGTFEKIGPII
+#=GR ENTF_ECOLI/1066-1287    SS    -EEEEE--TTS.-SGGGGGGGGTS-TT...-EEEEE---TTT..SHHHHTSSHHHHHHHHHHHHHHH-SSS.-EEEEEETHHHHHHHHHHHHHHHT...T--EEEEEEES---TTCHHCGGGGGGT--CT.............HHHHHHHHHHHHHHTTTTSSSSHHHHHHHHHHHHHHHHHTTS-.............---ECSE..........................EEEEEEGGG--TTTT....HHH.............HHCCGECEEE..EEEESS-CCGCCS.......HHHHHHHHHHH
+#=GR ENTF_ECOLI/1066-1287    pAS   ...............................................................................*......................................................................................................................................................................................................................................
+Q9I182_PSEAE/2171-2428             .PLFMFHPSFG.SVHCYKTLAMALRDRHPVKGVVCRALLGAG.....REVPEWDDMVAEYAEQLLQEHPEG.VFNLAGWSLGGNLAMDVAARLEQR...GRQVAFVGWIDAPAPVRVEAFWNEIGPTPEAVP.........NLSVGEMRVELLGVMFPERAEHIERAWSSICSATTDDEQRWTRMSDWAEAEIGAEFATLRSEIAQSN...................ELEVSWELKQILDERLKAMDYPRLTAKVS.........LWWAARSTNAIQ..RSAVERSMAEAIG.AERVEPVRVLDTRHDK.
+#=GR Q9I182_PSEAE/2171-2428  pAS   ...............................................................................*......................................................................................................................................................................................................................................
+B8NI04_ASPFN/1867-2102             .TLFMLPDGGG.SAFSYASLPRLKSDT..AVVGLNCPYARD....PENMNCTHGAMIESFCNEIRRRQPRG.PYHLGGWSSGGAFAYVVAEALVNQ...GEEVHSLIIIDAPIPQAMEQLPRAFYEHCN..............SIGLFATQPGA..SPDGSTEPPSYLIPHFIAVVDVMLDYKLAP.............LHARRMPKV..................GIVWAADTVMDERDAPKMKGMHFMIQKRTEF......GPDGWDTIMPGASFDIVRADGANHFTLMQ.......KEHVSIISD..
+#=GR B8NI04_ASPFN/1867-2102  pAS   ...............................................................................*......................................................................................................................................................................................................................................
+PKSR_BACSU/2234-2511               RPVFWFHGGVG.GVEIYQQFAQKSQRP.....FYGIQARGFM..TDSAPLHGIEQMASYYIEIIRSIQPEG.PYDVGGYSLGGMIAYEVTRQLQSQ...GLAVKSMVMIDSPYRSETKENEASMKTSMLQTINTM...LASIAKREKFTDVLISREEVDISLEDEEFLSELIDLAKERGLNKPDKQ.............IRAQAQQMMKTQRAYDLESYTVKPLPDPETVKCYYFRNKSRSFFGDLDTYFTLSNEKEPFDQAAYWEEWERQIPHFHL..VDVDSSNHFMILTEPKA..STALLEFCEKLY
+#=GR PKSR_BACSU/2234-2511    pAS   ...............................................................................*......................................................................................................................................................................................................................................
+ACVS_EMENI/3553-3767               PILFLLPPGEGGAESYFNNIVKHLPTT.NMVVFNNYYLHSKS.......LNTFEKLAEMYLGHIRQIQPDG.PYHFIGWSFGGTIAMEISRQLVGL...GSTIGLLGIID...TYF.NVPGATRAIGLG..............DTEVLDPIHHI...SQPEPADFQCLPASTDYIILFKATRVND..............KFQSENQ.........................RRLYEYYDKTLLNDLDWLLPGAS.............NIHLVRLEED..THFSWATNPRQIA........HVCSTIEKFL
+#=GR ACVS_EMENI/3553-3767    pAS   ...............................................................................*......................................................................................................................................................................................................................................
+FAS_HUMAN/2242-2501                RPLFLVHPIEG.STTVFHSLASRLSIP.TYGLQCTRAAPLD..........SIHSLAAYYIDCIRQVQPEG.PYRVAGYSYGACVAFEMCSQLQAQQSPAPTHNSLFLFDGSPTYV.LAYTQSYRAKLTPGCEAEAETEAICFFVQQFTDMEHNR.VLEALLPLK....GLEERVAAAVDLIIKS..............HQGLDRQELSFA............ARSFYYKLRAAEQYTPKAKYHGNVMLLRAKTGGAYGEDLGADYNLSQVCDGKVS..VHVIEGDHRTLLE.GSG..LESIISIIHSSL
+#=GR FAS_HUMAN/2242-2501     SS    --EEEE--TT-.-SGGGHHHHHH-SS-.EEEE---TTS-TS..........-HHHHHHHHHHHHHHH-SSS.--EEEEETHHHHHHHHHHHHHHHHHTTS----EEEEES-SSCHH.HHHHHHHHTTS-TT-HHHHHHHHHHHHHHHHSS--HHH.HHHHHTTSS....SHHHHHHHHHHHHHHH..............-TTS-HHHHHHH............HHHHHHHHHHHHC---SS-B-S-EEEEEEST--SSSSSSTTTTTGGGTB-S-EE..EEEESS-TTTTTS.HHH..HHHHHHHHHHHT
+#=GR FAS_HUMAN/2242-2501     AS    ...............................................................................*......................................................................................................................................................................................................................................
+#=GR FAS_HUMAN/2242-2501     sAS   ..............................................................................................................................................................................................................................................................................................*.......................
+FAS_CHICK/2243-2502                RPLFLVHPIEG.SIAVFYTLASKLHMP.CYGLQCTKAAPLD..........SIQSLASYYIDCMKQIQPEG.PYRIAGYSFGACVAFEMCSQLQAQQNASHALNSLFLFDGSHSFV.AAYTQSYRAKLTQGNEAALETEALCAFVQQFTGIEYNK.LLEILLPLE....DLEARVNAAADLITQIHKNI.......NREALSFAAASF...................YHKLKAADKYIPESKYHGNVTLMRAKTHNEYEEGLGGDYRLSEVCDGKVS..VHIIEGDHRTLLE.GDG..VESIIGIIHGSL
+#=GR FAS_CHICK/2243-2502     pAS   ...............................................................................*......................................................................................................................................................................................................................................
+#=GR FAS_CHICK/2243-2502     sAS   ..............................................................................................................................................................................................................................................................................................*.......................
+V4HXA4_9ACTN/24-247                .RLVCFPHAGG.SASFYHPVSARFAP...GAEVVSLQYPGRQDRRKEPCVPDLGTLADLITEQLLPLDER..PTVFFGHSMGAALAFETAWRLEQK...GAGPRTVIASGRRGPST.TRAERVHTRDDDG.............IVAEMKRLNGT...AAGVLGDEEILRMALPALRGDYRAIETYT.............CPPDRRL.......................ACGLTVLTGEDDPLTTVE...EAER.............WRDHTTGPFR..LRVFTGGHFFLTQ...H..LDAVNTEIAQAL
+#=GR V4HXA4_9ACTN/24-247     pAS   ...............................................................................*................................................................................................................................................................*.............................................*.......................
+A4F7P6_SACEN/17-239                .RLVCFPHAGA.AADSYLDLARALAPE...IDVHAVQYPGRQDRRDEEPLGTAGEIADEVAAVLRASGGDG.PFALFGHSMGALIAYETARRLERE..PGGGPLRLFVSGQTAP.R.VHERRTDLPGDDG.............LVDELRRLG.T...SEAALADEALLAMSLPVLRADYRVLRSYAW..........ADGPPLRAG..........................ITALCGDADPLTATG...DAER.............WLQHSVIPGR..TRTFPGGHFYLGE...Q..VTEVAGAVRRD.
+#=GR A4F7P6_SACEN/17-239     pAS   ...............................................................................*................................................................................................................................................................*.............................................*.......................
+Q9HWG2_PSEAE/18-239                .RLACFPHAGG.SASFFRSWSERLPPD...IDLLALQYPGREDRFNEAPATRLEDLADGAALALRDFADA..PLALFGHSLGAALAYETALRLESA...GAPLRHLFVSAHPAPHR.QRGGALHRGDEAA.............LLEDVRRQGG....ASELLEDADLRALFLPILRADYQAIETYR............RAQPIALA........................CALDVLLGEHDEEVSAA...EAQA.............WSDASRTPAR..LRRFPGGHFYLSE...G..RDAVIEHLLRR.
+#=GR Q9HWG2_PSEAE/18-239     pAS   ...............................................................................*................................................................................................................................................................*.............................................*.......................
+MBTB_MYCTU/1190-1411               ..VLVFPHAGG.AAAAYRWLAKSLVAN..DVDTFVVQYPQRADRRSHPAADSIEALALELFEAGDWHLTA..PLTLFGHCMGAIVAFEFARLAERN...GVPVRALWASSGQAPST.VAASGPLPTADRD.............VLADMVDLGGT...DPVLLEDEEFVELLVPAVKADYRALSGYS.............CPPDVRI.........................RANIHAVGGNRDHRISREMLTS..............WETHTSGRFT..LSHFDGGHFYLN...DH..LDAVARMVSA..
+TESA_MYCTU/30-253                  .TLYIFPHAGG.TAKDYVAFSREFSAD...VKRIAVQYPGQHDRSGLPPLESIPTLADEIFAMMKPSARIDDPVAFFGHSMGGMLAFEVALRYQSA...GHRVLAFFVSACSAPGH.IRYKQLQDLSDRE.............MLDLFTRMTGM...NPDFFTDDEFFVGALPTLRAVR.AIAGYS.............CPPETKL.......................SCPIYAFIGDKDWIATQD..DMDP..............WRDRTTEEFS..IRVFPGDHFYLN...DN..LPELVSDIEDK.
+#=GR TESA_MYCTU/30-253       SS    .EEEEE--TT-.-GGGGHHHHHTS-TT...SEEEE---------------SSHHHHHHHHHHHHGGGS-TTSEEEEEEETHHHHHHHHHHHHHHHT...T-EEEEEEEES---TTS.SSTTTTTSSSTTH.............HHHHHHH----...---------S-TTTHHHHHHHH.HHHT-B.............--TT--B.......................SS-EEEEEETT-SSS-HH..HHGG..............GGGGBSS-EE..EEEESSSTTGGG...TS..HHHHHHHHHHH.
+#=GR TESA_MYCTU/30-253       AS    ...............................................................................*................................................................................................................................................................*.............................................*.......................
+Q9I156_PSEAE/8-230                 .QLFCLPYSGA.SARLFRRWQPSLPG...WIRLLPLELPGRGLRFGEALHTDAASLVAQLAGELQGTLDSASPYAFFGHSLGGLLAFELAHAMRRR..GLEGPLALFLSGVSPPAENDVSGYRRAKADAE.............LVAALRDYRGT...PEAVLNDPSLMQMLLPVVRADFLVTGSYRY..........QAHGPLDAA..........................LHLFGGREDSLRSAE...LLG..............WLHEAGGDFT..LDLLDGQHFFIRE...Q..QGQLLRLL....
+#=GR Q9I156_PSEAE/8-230      pAS   ...............................................................................*................................................................................................................................................................*.............................................*.......................
+SAST_RAT/27-256                    FKLICFPWAGG.GSIHFAKWGQKINDS...LEVHAVRLAGRETRLGEPFANDIYQIADEIVTALLPIIQDK.AFAFFGHSFGSYIALITALLLKEK..YKMEPLHIFVSGASAPHSTSRPQVPDLNELTEE...........QVRHHLLDFGGT...PKHLIEDQDVLRMFIPLLKADAGVVKKFIF...........DKPSKALL.......................SLDITGFLGSEDTIKDIEG...................WQDLTSGKFD..VHMLPGDHFYLMK.PDN...ENFIKNYIAKC
+#=GR SAST_RAT/27-256         AS    ...............................................................................*..............................................................................................................................................................................................................*.......................
+#=GR SAST_RAT/27-256         pAS   ................................................................................................................................................................................................................................................*.....................................................................
+#=GC SS_cons                       EEEEEE--TTC.CCGGGHHHHHHSTTT.EEEEEEEECSTTST--SHHHCTSSHHHHHHHHHHHHHHHSSSSSCEEEEEETHHHHHHHHHHHHHHHTHTTT-CEEEEEEESCCCTTSHHSCCTTCCTTHHTT.HHHHHHHHHHHHHHHHHHTTHHHHHCCTTTHCCHHHCCHHHHHHHHHHHHCTCC...........S.-TTSCSEHHHHH............HHHHHHCCCEEEEEECSSSSTCHHCCCCHCH..SSSSSSTTTTTGHCTBCSCEE..EEEESSCTTHHHS.HHH..HHHHHHHHHHHH
+#=GC seq_cons                      ..LhhFPhuuG.uuphapsluppLss....sthhslphPGct...t...hssltplAshhhstlpthtscs.PaslhGaShGuhlAaEhAppLcpp...Gtsspslhl.ss.sPtt.sptptsptsssst.............hlsphpchtts...spthhpscchhthhlsslpushtslpshp.............t.shst...........................hshhsspcshhpshs....spt.............Wpptsstths..lchhsGsHFhlhp...t...spllctlpshh
+//
