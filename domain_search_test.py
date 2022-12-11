@@ -6,7 +6,7 @@ from pyhmmer import hmmer
 from pyhmmer import phmmer
 import subprocess
 import pyhmmer
-from pyhmmer import
+from pyhmmer.hmmer import hmmscan
 
 
 fasta_sequences = SeqIO.parse(open("caelestamide.fasta"),'fasta')
@@ -26,5 +26,7 @@ cat condensation.hmm p450.hmm thioesterase.hmm > test
 hmmpress test
 hmmscan test test.fasta
 hmmscan -o 'output.txt' --noali  test test.fasta
+
+
 
 
