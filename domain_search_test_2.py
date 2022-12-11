@@ -48,14 +48,7 @@ def run_hmmscan(operation="hmmscan",
 
 
 if __name__ == "__main__":
-    operation = "hmmscan"
-    output = "output.txt"
-    options = "--noali"
-    domains = "test"
-    protein_file = "test.fasta"
 
-    # run_hmmscan(operation, output, options, domains, protein_file)
-    #
     # # alternative use the defaults and just change one value
     # run_hmmscan(protein_file="test.fasta")
     #
