@@ -5,8 +5,8 @@ from pathlib import Path
 from Bio import SeqIO
 import datetime
 
-def run_multiple_sequences(sequence_filename):
 
+def run_multiple_sequences(sequence_filename):
     empty_file_list = []
     hits_file_list = []
 
@@ -38,7 +38,6 @@ def run_multiple_sequences(sequence_filename):
         run_hmmscan(output=output_filename,
                     protein_file=filename)
 
-
         # Now look to see if output file has any data in it
         # It assumes 'No hits detected' in the file indicates the file is not useful
         with open(output_filename, 'r') as file:
@@ -62,7 +61,6 @@ def run_multiple_sequences(sequence_filename):
         print(f"\t{file}")
 
 
-
 def run_hmmscan(operation="hmmscan",
                 output="output.txt",
                 options="--noali",
@@ -78,7 +76,6 @@ def run_hmmscan(operation="hmmscan",
 
 
 if __name__ == "__main__":
-
     # # alternative use the defaults and just change one value
     # run_hmmscan(protein_file="test.fasta")
     #
