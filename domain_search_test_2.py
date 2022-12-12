@@ -49,13 +49,13 @@ def run_multiple_sequences(sequence_filename):
                 hits_file_list.append(output_filename)
 
     # Remove empty files
-    print("Removing output files with no hits")
+    print("\nRemoving output files with no hits")
     for file in empty_file_list:
         print(f'\tRemoving {file}')
         os.remove(file)
 
     # List files with hits
-    print('Output Files with hits detected:')
+    print('\nOutput Files with hits detected:')
     for file in hits_file_list:
         print(f"\t{file}")
 
