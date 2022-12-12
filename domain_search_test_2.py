@@ -22,13 +22,12 @@ def run_multiple_sequences(sequence_filename):
     fasta_sequences = SeqIO.parse(open(sequence_filename), 'fasta')
     for index, fasta in enumerate(fasta_sequences):
         # write fasta to a file
-        print(f"Processing sequence {index}")
         fasta_name = f">{fasta.name}\n"
         data_to_save = str(fasta.seq)
 
         # Create input file
         filename = f"{fasta_file_directory.name}{os.sep}{fasta.name}.fasta"
-        print(f"processing\n{fasta_name}{data_to_save}")
+        print(f"\nProcessing number {index} - {fasta_name.strip()}")
         with open(filename, 'w') as file:
             file.write(fasta_name)
             file.write(data_to_save)
@@ -67,11 +66,8 @@ def run_hmmscan(operation="hmmscan",
                 domains="test",
                 protein_file="test.fasta"):
     cmd = f"{operation} -o {output} {options} {domains} {protein_file}"
-
     print(f"Running -> '{cmd}'")
-
     subprocess.run(cmd, shell=True)
-
     print("Command completed")
 
 
