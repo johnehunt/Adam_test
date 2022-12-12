@@ -3,14 +3,20 @@ import subprocess
 from pathlib import Path
 
 from Bio import SeqIO
-
+import datetime
 
 def run_multiple_sequences(sequence_filename):
+
+    empty_file_list = []
+    hits_file_list = []
+
+    today = datetime.datetime.now()
+    date_suffix = f"-{today.year}-{today.month}-{today.day}"
     # Create a directory for all the fasta files
-    fasta_file_directory = Path("fasta_files")
+    fasta_file_directory = Path(f"fasta_files{date_suffix}")
     fasta_file_directory.mkdir(exist_ok=True)
     # Create a directory for output
-    output_directory = Path("output")
+    output_directory = Path(f"output{date_suffix}")
     output_directory.mkdir(exist_ok=True)
     # Load sequences from file
     fasta_sequences = SeqIO.parse(open(sequence_filename), 'fasta')
@@ -33,6 +39,30 @@ def run_multiple_sequences(sequence_filename):
                     protein_file=filename)
 
 
+        # Now look to see if output file has any data in it
+        # It assumes 'No hits detected' in the file indicates the file is not useful
+        with open(output_filename, 'r') as file:
+            content = file.read()
+            if content.find("[No hits detected that satisfy reporting thresholds]") != -1:
+                # the file does not contain a match
+                empty_file_list.append(output_filename)
+            else:
+                # Add to list of files with a hit
+                hits_file_list.append(output_filename)
+
+    # Remove empty files
+    print("Removing output files with no hits")
+    for file in empty_file_list:
+        print(f'\tRemoving {file}')
+        os.remove(file)
+
+    # List files with hits
+    print('Output Files with hits detected:')
+    for file in hits_file_list:
+        print(f"\t{file}")
+
+
+
 def run_hmmscan(operation="hmmscan",
                 output="output.txt",
                 options="--noali",
@@ -42,7 +72,7 @@ def run_hmmscan(operation="hmmscan",
 
     print(f"Running -> '{cmd}'")
 
-    subprocess.call(cmd, shell=True)
+    subprocess.run(cmd, shell=True)
 
     print("Command completed")
 
