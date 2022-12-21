@@ -1,10 +1,15 @@
+#to do
+#create one folder per genome
+#incorporate cblaster
+#create a summary file for ease of analysis
+
 import os
 import subprocess
 from pathlib import Path
 
 from Bio import SeqIO
 import datetime
-
+from Bio import Entrez
 
 def run_multiple_sequences(sequence_filename):
     empty_file_list = []
@@ -79,3 +84,31 @@ if __name__ == "__main__":
     #             protein_file="test.fasta")
 
     run_multiple_sequences("caelestamide.fasta")
+
+
+def run_cblaster(operation="cblaster search",
+                query="protein_expression.fasta",
+                 # taxinomy is an optional field input in the form of {-eg "txid1902[orgn]"}
+                database="refseq_protein",
+                hits="2",
+                output="summary.csv",
+                genes="100",
+                range="20000",
+                save="session.json",
+                max_distance="50000"):
+    cmd = f"{operation} -qf {query} -db {database} -mh {hits} -o {output} -ig -mic {genes} -g {range} -s {save} -md {max_distance}"
+    print(f"Running -> '{cmd}'")
+    subprocess.run(cmd, shell=True)
+    print("Command completed")
+    print("Extracting clusters")
+    extract = f"cblaster extract_clusters session.json -o example_directory"
+    subprocess.run(extract, shell=True)
+
+# cblaster currently gives locus tag as protein_ID which prevents hmmscan - download datasets and serch with locus tag?
+
+# cblaster search -qf protein_expression.fasta -db refseq_protein -eq "txid1902[orgn]" -mh 7 -o summary.cvs -ig -mic 100 -g 20000 -b binary.csv -s session.json -md 50000 -p plot.html
+# cblaster extract_clusters session.json -o example_directory
+# cblaster plot_clusters session.json -o plot.html
+
+# either use the website links to access the fasta files rather than cblaster
+# or code and get genbanks that have the locus tag like in cblaster
