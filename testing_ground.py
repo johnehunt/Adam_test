@@ -23,6 +23,11 @@ from Bio import SeqIO
 # gunzip *.faa.gz
 
 
+print("Defining globals")
+working_genome = ""
+supercluster = []
+gene = ""
+
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
     for file in dir_path.iterdir():
@@ -167,6 +172,7 @@ def clear_out_empty_files():
                 os.remove(file)
 
 def main():
+    global working_genome, supercluster, gene
     print("=" * 25)
     print("Cleaning up files")
     clean_up()
