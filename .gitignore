@@ -29,3 +29,7 @@ bin-release/
 /.DS_Store
 *.faa
 assembly_summary_genbank.txt
+*output.txt
+*.fasta
+rnap.ou*
+Summary.txt
