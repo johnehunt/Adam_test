@@ -19,7 +19,6 @@ bin-release/
 /.idea/vcs.xml
 /.idea/inspectionProfiles/profiles_settings.xml
 *.html
-*.hmm
 *.sto
 *.h3f
 /ncbi*
@@ -28,3 +27,4 @@ bin-release/
 /backup*
 /*pycache*
 /.DS_Store
+*.faa
