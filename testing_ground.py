@@ -158,7 +158,7 @@ def supercluster_extraction(supercluster):
 
 
 def clear_out_empty_files():
-    print("Checking for empty files")
+    print("Checking for empty files!")
     dir_path = Path(".")
     for file in dir_path.iterdir():
         if os.path.isfile(file):
