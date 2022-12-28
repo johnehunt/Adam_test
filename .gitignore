@@ -28,3 +28,4 @@ bin-release/
 /*pycache*
 /.DS_Store
 *.faa
+assembly_summary_genbank.txt
