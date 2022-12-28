@@ -18,3 +18,13 @@ bin-release/
 # information for Eclipse / Flash Builder.
 /.idea/vcs.xml
 /.idea/inspectionProfiles/profiles_settings.xml
+*.html
+*.hmm
+*.sto
+*.h3f
+/ncbi*
+/refseq/*
+/example_directory/*
+/backup*
+/*pycache*
+/.DS_Store
