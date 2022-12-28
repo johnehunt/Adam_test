@@ -33,3 +33,5 @@ assembly_summary_genbank.txt
 *.fasta
 rnap.ou*
 Summary.txt
+/download_protein_files.sh
+/ftp_links.txt
