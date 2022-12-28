@@ -10,7 +10,7 @@ import os
 import datetime
 from pathlib import Path
 import shutil
-import domain_search_test_2
+from Bio import SeqIO
 
 # run this in command line the first time
 # rsync -t -v rsync://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/assembly_summary_genbank.txt ./
@@ -46,9 +46,6 @@ def clean_up():
         print(f'Deleting {directory}')
         delete_directory(directory)
 
-
-clean_up()
-
 def genome_fetch(species="\'Streptomyces.*\'",
                  source="assembly_summary_genbank.txt",
                  output="ftp_links.txt"):
@@ -75,14 +72,6 @@ def run_hmmsearch(operation="hmmsearch",
     print(f"Running -> '{cmd}'")
     subprocess.run(cmd, shell=True)
     print("Command completed")
-
-
-print('Starting')
-
-genome_fetch(species="\'Streptomyces.*\'", output="ftp_links.txt")
-fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
-
-
 
 
 def rnap_search():
@@ -124,7 +113,7 @@ def rnap_search():
         print(gene)
     return gene
 
-from Bio import SeqIO
+
 
 def supercluster_region(gene):
     print("Running supercluster_region")
@@ -168,92 +157,107 @@ def supercluster_extraction(supercluster):
     return(supercluster_output)
 
 
+def clear_out_empty_files():
+    dir_path = Path(".")
+    for file in dir_path.iterdir():
+        if os.path.isfile(file):
+            if os.path.getsize(file) == 0:
+                print(f"Removig empty file {file}")
+                os.remove(file)
 
+def main():
+    print("=" * 25)
+    print("Cleaning up files")
+    clean_up()
+    print("-" * 25)
+    print('Starting - Supercluster Search')
+    print("=" * 25)
 
+    genome_fetch(species="\'Streptomyces.*\'", output="ftp_links.txt")
+    fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
+    # delete directory when done
+    # save file name
+    # save positive result fastas
+    # turn commands into functions to be called
 
+    with open("download_protein_files.sh", 'r') as file:
+        count = 1635 # 1636 dont change range change count - set to one to start from beginning
+        working_genome = ""
+        supercluster = []
+        gene = ""
+        today = datetime.datetime.now()
+        date_suffix = f"-{today.year}-{today.month}-{today.day}"
+        hit_regions_directory = Path(f"hits{date_suffix}")
+        hit_regions_directory.mkdir(exist_ok=True)
+        for genome in range(1, 1000):
+            search_genome = ""
+            print("working")
+            cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
+            # cmd = f"head -n {count} download_protein_files.sh"
+            print(cmd)
+            search_genome = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
+            print("here")
+            print(f"search_genome cmd: {search_genome}") # change this from a list later
+            print("There")
+            subprocess.run(search_genome, shell=True)
+            cmd = "gunzip *.faa.gz"
+            subprocess.run(cmd, shell=True)
 
-# delete directory when done
-# save file name
-# save positive result fastas
-# turn commands into functions to be called
+            genome_name = ""
+            for letter in search_genome:
+                genome_name = genome_name + letter
+                if letter == "/":
+                    genome_name = ""
+                if genome_name.endswith(".faa"):
+                    working_genome = genome_name
+            print(f"working genome = {working_genome}")
 
+            working_genome_zip = f"{working_genome}.gz"
+            print(f"Checking for {working_genome_zip}")
+            if os.path.exists(working_genome_zip):
+                print(f"Removing {working_genome_zip}")
+                os.remove(working_genome_zip)
+            else:
+                print(f"Could not find {working_genome_zip}")
+            print("-" * 25)
+            print("still working")
 
-with open("download_protein_files.sh", 'r') as file:
-    count = 1635 # 1636 dont change range change count - set to one to start from beginning
-    working_genome = ""
-    supercluster = []
-    gene = ""
-    today = datetime.datetime.now()
-    date_suffix = f"-{today.year}-{today.month}-{today.day}"
-    hit_regions_directory = Path(f"hits{date_suffix}")
-    hit_regions_directory.mkdir(exist_ok=True)
-    for genome in range(1, 1000):
-        search_genome = ""
-        print("working")
-        cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
-        # cmd = f"head -n {count} download_protein_files.sh"
-        print(cmd)
-        search_genome = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
-        print("here")
-        print(f"search_genome cmd: {search_genome}") # change this from a list later
-        print("There")
-        subprocess.run(search_genome, shell=True)
-        cmd = "gunzip *.faa.gz"
-        subprocess.run(cmd, shell=True)
+            supercluter_copy = f"hits{date_suffix}/{working_genome}.fasta"
+            run_hmmsearch(target=working_genome)
+            gene = rnap_search()
+            if os.path.exists(working_genome):
+                supercluster = supercluster_region(gene)
+                if supercluster != False:
+                    summary_filename = "Summary.txt"
+                    with open(summary_filename, 'a') as file:
+                        file.write(f"{working_genome} ")
+                        # file.write("\n")
+                    supercluster_output = supercluster_extraction(supercluster)
+                    os.remove(working_genome)
+                    shutil.copy("supercluster_output.fasta", supercluter_copy)
+                    run_multiple_sequences("supercluster_output.fasta")
+                    fasta_files = Path(f"fasta_files{date_suffix}")
+                    for fasta_file in fasta_files.iterdir():
+                        print(f'Attempting to Delete - {fasta_file}')
+                        if os.path.exists(fasta_file):
+                            print(f'Deleting {fasta_file}')
+                            os.remove(fasta_file)
+                        else:
+                            print(f"FILE seems to have disappeared {fasta_file}")
+                    os.rmdir(fasta_files)
+                    with open(summary_filename, 'r') as file:
+                        for line in file:
+                            if line.endswith("NO HITS DETECTED\n"):
+                                print(line)
+                                index = line.index(" NO HITS DETECTED")
+                                filename = line[:index]
+                                file_to_delete = f"{hit_regions_directory.absolute()}{os.sep}{filename}.fasta"
+                                if os.path.exists(file_to_delete):
+                                    print(f"Deleting {file_to_delete}")
+                                    os.remove(file_to_delete)
 
-        genome_name = ""
-        for letter in search_genome:
-            genome_name = genome_name + letter
-            if letter == "/":
-                genome_name = ""
-            if genome_name.endswith(".faa"):
-                working_genome = genome_name
-        print(f"working genome = {working_genome}")
+            count = count + 1
 
-        working_genome_zip = f"{working_genome}.gz"
-        print(f"Checking for {working_genome_zip}")
-        if os.path.exists(working_genome_zip):
-            print(f"Removing {working_genome_zip}")
-            os.remove(working_genome_zip)
-        else:
-            print(f"Could not find {working_genome_zip}")
-        print("-" * 25)
-        print("still working")
-
-        supercluter_copy = f"hits{date_suffix}/{working_genome}.fasta"
-        run_hmmsearch(target=working_genome)
-        gene = rnap_search()
-        if os.path.exists(working_genome):
-            supercluster = supercluster_region(gene)
-            if supercluster != False:
-                summary_filename = "Summary.txt"
-                with open(summary_filename, 'a') as file:
-                    file.write(f"{working_genome} ")
-                    # file.write("\n")
-                supercluster_output = supercluster_extraction(supercluster)
-                os.remove(working_genome)
-                shutil.copy("supercluster_output.fasta", supercluter_copy)
-                run_multiple_sequences("supercluster_output.fasta")
-                fasta_files = Path(f"fasta_files{date_suffix}")
-                for fasta_file in fasta_files.iterdir():
-                    print(f'Attempting to Delete - {fasta_file}')
-                    if os.path.exists(fasta_file):
-                        print(f'Deleting {fasta_file}')
-                        os.remove(fasta_file)
-                    else:
-                        print(f"FILE seems to have disappeared {fasta_file}")
-                os.rmdir(fasta_files)
-                with open(summary_filename, 'r') as file:
-                    for line in file:
-                        if line.endswith("NO HITS DETECTED\n"):
-                            print(line)
-                            index = line.index(" NO HITS DETECTED")
-                            filename = line[:index]
-                            file_to_delete = f"{hit_regions_directory.absolute()}{os.sep}{filename}.fasta"
-                            if os.path.exists(file_to_delete):
-                                print(f"Deleting {file_to_delete}")
-                                os.remove(file_to_delete)
-
-        count = count + 1
-
+if __name__ == "__main__":
+    main()
