@@ -28,6 +28,9 @@ working_genome = ""
 supercluster = []
 gene = ""
 
+START_INDEX = 1
+END_INDEX = 10
+
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
     for file in dir_path.iterdir():
@@ -189,7 +192,7 @@ def main():
     # turn commands into functions to be called
 
     with open("download_protein_files.sh", 'r') as file:
-        count = 1 # 1636 dont change range change count - set to one to start from beginning
+        count = START_INDEX # 1636 dont change range change count - set to one to start from beginning
         working_genome = ""
         supercluster = []
         gene = ""
@@ -197,7 +200,7 @@ def main():
         date_suffix = f"-{today.year}-{today.month}-{today.day}"
         hit_regions_directory = Path(f"hits{date_suffix}")
         hit_regions_directory.mkdir(exist_ok=True)
-        for genome in range(1, 10):
+        for genome in range(1, END_INDEX):
             search_genome = ""
             print("working")
             cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
