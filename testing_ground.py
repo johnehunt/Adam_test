@@ -183,7 +183,7 @@ def main():
     # turn commands into functions to be called
 
     with open("download_protein_files.sh", 'r') as file:
-        count = 1635 # 1636 dont change range change count - set to one to start from beginning
+        count = 1 # 1636 dont change range change count - set to one to start from beginning
         working_genome = ""
         supercluster = []
         gene = ""
@@ -191,7 +191,7 @@ def main():
         date_suffix = f"-{today.year}-{today.month}-{today.day}"
         hit_regions_directory = Path(f"hits{date_suffix}")
         hit_regions_directory.mkdir(exist_ok=True)
-        for genome in range(1, 1000):
+        for genome in range(1, 10):
             search_genome = ""
             print("working")
             cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
