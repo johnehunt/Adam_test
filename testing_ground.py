@@ -15,7 +15,8 @@ from Bio import SeqIO
 # run this in command line the first time
 # rsync -t -v rsync://ftp.ncbi.nlm.nih.gov/genomes/ASSEMBLY_REPORTS/assembly_summary_genbank.txt ./
 
-# grep - E 'Streptomyces.*' assembly_summary_genbank.txt | cut -f 20 > ftp_links.txt
+# grep -E 'Streptomyces.*' assembly_summary_genbank.txt | cut -f 20 > ftp_links.txt
+# grep -E 'Streptomyces.*' assembly_summary_genbank.txt | cut -f 20 > ftp_links.txt
 # awk 'BEGIN{FS=OFS="/";filesuffix="protein.faa.gz"}{ftpdir=$0;asm=$10;file=asm"_"filesuffix;print "rsync -t -v "ftpdir,file" ./"}' ftp_links.txt | sed 's/https/rsync/g' > download_protein_files.sh
 # rsync -t -v rsync://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/009/765/GCA_000009765.2_ASM976v2/GCA_000009765.2_ASM976v2_protein.faa.gz ./ # what source does
 # source download_protein_files.sh
@@ -29,7 +30,7 @@ supercluster = []
 gene = ""
 
 START_INDEX = 1
-END_INDEX = 200
+END_INDEX = 1500
 
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
@@ -73,14 +74,13 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="RNA_pol_Rpb1_3.hmm",
+            domains="RNA_pol_Rpb1_3.hmm", # RNA_pol_Rpb1_3.hmm --- for normal supercluster search / LAL.hmm / MftR.hmm / Ribosomal_protein_S12.hmm / SecY.hmm
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"
     print(f"Running -> '{cmd}'")
     subprocess.run(cmd, shell=True)
     print("Command completed")
-
 
 def rnap_search():
     print("Running rnap_search")
@@ -174,6 +174,8 @@ def clear_out_empty_files():
                 print(f"Removig empty file {file}")
                 os.remove(file)
 
+
+
 def main():
     global working_genome, supercluster, gene
     print("=" * 25)
@@ -183,7 +185,7 @@ def main():
     print('Starting - Supercluster Search')
     print("=" * 25)
 
-    genome_fetch(species="\'Streptomyces.*\'", output="ftp_links.txt")
+    genome_fetch(species="\'Pantoea.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
     fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
     # delete directory when done

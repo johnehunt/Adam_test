@@ -26,7 +26,3 @@ cat condensation.hmm p450.hmm thioesterase.hmm > test
 hmmpress test
 hmmscan test test.fasta
 hmmscan -o 'output.txt' --noali  test test.fasta
-
-
-
-
