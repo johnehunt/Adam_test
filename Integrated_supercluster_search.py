@@ -29,8 +29,8 @@ working_genome = ""
 supercluster = []
 gene = ""
 
-START_INDEX = 670
-END_INDEX = 1000
+START_INDEX = 1
+END_INDEX = 10
 
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
