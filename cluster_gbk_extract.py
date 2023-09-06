@@ -387,12 +387,13 @@ def main():
                                 fasta_number = letter
                             if seq == 'fasta_rewrite':
                                 save = True
-                        seq = ''
                         copy_target = False
                         with open(target_gbk, 'r') as target:
                             for line in target:
+                                seq = ''
                                 for letter in line:
                                     seq = seq + letter
+                                    print(f'{seq}')
                                     if seq == "LOCUS":
                                         iterations = iterations + 1
                                     if iterations == fasta_number and seq == 'LOCUS':
