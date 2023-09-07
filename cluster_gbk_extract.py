@@ -100,7 +100,6 @@ def supercluster_region(gene, working_genome):
         if gene == fasta.id:
             #print(f' who thought this was a good idea? {len(fasta.seq)}') # delete this
             if len(fasta.seq) < 4000: #150 for R_S10
-                print("Match")
                 rnap = count
                 low_boundary = rnap - 35 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
                 upper_boundary = rnap + 35 # changed from 20
@@ -127,7 +126,7 @@ def supercluster_region_genes(gene, working_genome):
     for index, fasta in enumerate(fasta_sequences):
         if gene == fasta.id:
             if len(fasta.seq) < 4000: #150 for R_S10
-                print("Match")
+                #print("Match")
                 rnap = count
                 low_boundary = rnap - 35 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
                 upper_boundary = rnap + 35 # changed from 20
@@ -370,7 +369,6 @@ def main():
                         #os.remove(target_contig) move to later!!!
                         shutil.copy("supercluster_output.fasta", supercluter_copy)
 
-                        print(f'made it here!')
                         # current issue is the writing of fasta file stuff only???
 
                         target_gbk = working_genome_zip[:-3]
@@ -383,17 +381,19 @@ def main():
                             seq = seq + letter
                             if letter == '/':
                                 seq = ''
+                            if letter == '.':
+                                save = False
                             if save == True:
                                 fasta_number = letter
                             if seq == 'fasta_rewrite':
                                 save = True
                         copy_target = False
+                        fasta_number = int(fasta_number)
                         with open(target_gbk, 'r') as target:
                             for line in target:
                                 seq = ''
                                 for letter in line:
                                     seq = seq + letter
-                                    print(f'{seq}')
                                     if seq == "LOCUS":
                                         iterations = iterations + 1
                                     if iterations == fasta_number and seq == 'LOCUS':
@@ -403,7 +403,7 @@ def main():
                                         copy_target = False
                                 if copy_target == True:
                                     with open(new_target_contig, 'a') as file:
-                                        file.write(f'{seq}\n')
+                                        file.write(f'{seq}')
 
                         # write some code to re-extract the sequence as gbff not fasta!!!!
                         name_count = 0
