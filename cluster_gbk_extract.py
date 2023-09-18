@@ -7,7 +7,7 @@ from Bio import SeqIO
 from string import digits
 
 START_INDEX = 1
-END_INDEX = 10
+END_INDEX = 200
 
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
@@ -117,30 +117,6 @@ def supercluster_region(gene, working_genome):
     return supercluster
 
 
-def supercluster_region_genes(gene, working_genome):
-    fasta_sequences = SeqIO.parse(open(working_genome), 'fasta')
-    count = 0
-    supercluster_genes = ''
-    found = False
-    gene_hit_output = f'RPOB_hits.fasta' #change based on target gene - Ribosomal_S10_hits.fasta
-    for index, fasta in enumerate(fasta_sequences):
-        if gene == fasta.id:
-            if len(fasta.seq) < 4000: #150 for R_S10
-                #print("Match")
-                rnap = count
-                low_boundary = rnap - 35 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
-                upper_boundary = rnap + 35 # changed from 20
-                found = True
-                for i in range(low_boundary, upper_boundary):
-                    supercluster_genes = supercluster_genes + fasta.id
-        else:
-            count = count + 1
-    if found == False:
-        print("Failed")
-        return found
-    return supercluster_genes
-
-
 def gene_location(gene, working_genome):
     fasta_sequences = SeqIO.parse(open(working_genome), 'fasta')
     count = 0
@@ -164,8 +140,8 @@ def supercluster_extraction(supercluster, working_genome):
         for gene in supercluster:
             seq = ""
             if gene == supercluster_count:
-                #print(f'this is working {fasta.id}, {fasta.description}')
-                #print(fasta.seq)
+                print(f'this is working {fasta.id}, {fasta.description}')
+                print(fasta.seq)
                 for i in range(1, len(fasta.seq)):
                     seq = seq + fasta.seq[i]
                 supercluster_output.write(">" + fasta.id + fasta.description + "\n" + seq + "\n")
@@ -175,7 +151,22 @@ def supercluster_extraction(supercluster, working_genome):
     return(supercluster_output)
 
 
-
+def supercluster_genes(supercluster, working_genome):
+    fasta_sequences = SeqIO.parse(open(working_genome), 'fasta')
+    supercluster_count = 0
+    supercluster_genes = []
+    for index, fasta in enumerate(fasta_sequences):
+        #print(f'this is the break {supercluster_count}')
+        for gene in supercluster:
+            #print(f'this is what i want {fasta.id}')
+            if gene == supercluster_count:
+                #print(f'this is working {fasta.id}, {fasta.description}')
+                #print(fasta.seq)
+                to_add = fasta.id
+                print(fasta.id)
+                supercluster_genes.append(to_add)
+        supercluster_count = supercluster_count + 1
+    return(supercluster_genes)
 
 
 
@@ -357,10 +348,11 @@ def main():
                 gene = rnap_search()
                 if os.path.exists(target_contig):
                     supercluster = supercluster_region(gene, target_contig)
-                    supercluster_genes = supercluster_region_genes(gene, target_contig)
                     if supercluster != False:
+                        supercluster_genes_list = supercluster_genes(supercluster, target_contig)
                         gene_position = gene_location(gene, target_contig)
                         summary_filename = "Summary.txt"
+                        print(f'reaching here')
                         with open(summary_filename, 'a') as file:
                             file.write(f"{target_contig} ")
                             file.write(f"{gene_position} ")
@@ -430,19 +422,24 @@ def main():
                         dna = ''
                         dna_record = ''
                         with open(new_target_contig, "r") as target_contig:
+                            print(f'reaching there')
+                            record = True
                             for info in target_contig:
                                 dna_write = False
                                 seq = ''
-                                check_gene = ''
                                 should_be_true = False
-                                record = True
+                                copy_gene_name = False
+                                check_gene = ''
                                 for letter in info:
                                     seq = seq + letter
-                                    if seq == "            ##Genome-Assembly-Data-START##":
+                                    #if seq == "            ##Genome-Assembly-Data-START##":
+                                    if seq == "FEATURES             Location/Qualifiers":
                                         record = False
-                                    if seq == '                     /protein_id=':
+                                    if copy_gene_name == True and letter != ' ' or '"':
                                         check_gene = check_gene + letter
+                                    if seq == '                     /protein_id=':
                                         should_be_true = True
+                                        copy_gene_name = True
                                     if seq == '                     /protein_id=' and record == False:
                                         dna_start_record = True
                                     if seq == '                     /protein_id=' and record == True:
@@ -466,9 +463,13 @@ def main():
                                         dna_end = dna_end + letter
                                     if dna_end == 'complement(' and dna_end_record == True:
                                         dna_end = ''
-                                for supercluster_gene in supercluster_genes:
+                                for supercluster_gene in supercluster_genes_list:
+                                    print(f'xx {check_gene}')
+                                    print(f'yyy {supercluster_gene}')
                                     if check_gene == supercluster_gene:
                                         supercluster_record = True
+                                    if check_gene != supercluster_gene:
+                                        supercluster_record = False
                                 if supercluster_record != True and should_be_true == True:
                                     record = False
                                 if record == True or supercluster_record == True:
@@ -544,6 +545,8 @@ def main():
             count = count + 1
             if os.path.exists(working_genome):
                 os.remove(working_genome)
+            if os.path.exists(new_target_contig):
+                os.remove(new_target_contig)
             today = datetime.datetime.now()
             date_suffix = f"-{today.year}-{today.month}-{today.day}"
             output_directory = Path(f"output{date_suffix}")
