@@ -140,8 +140,6 @@ def supercluster_extraction(supercluster, working_genome):
         for gene in supercluster:
             seq = ""
             if gene == supercluster_count:
-                print(f'this is working {fasta.id}, {fasta.description}')
-                print(fasta.seq)
                 for i in range(1, len(fasta.seq)):
                     seq = seq + fasta.seq[i]
                 supercluster_output.write(">" + fasta.id + fasta.description + "\n" + seq + "\n")
@@ -163,7 +161,7 @@ def supercluster_genes(supercluster, working_genome):
                 #print(f'this is working {fasta.id}, {fasta.description}')
                 #print(fasta.seq)
                 to_add = fasta.id
-                print(fasta.id)
+                #print(fasta.id)
                 supercluster_genes.append(to_add)
         supercluster_count = supercluster_count + 1
     return(supercluster_genes)
@@ -350,6 +348,10 @@ def main():
                     supercluster = supercluster_region(gene, target_contig)
                     if supercluster != False:
                         supercluster_genes_list = supercluster_genes(supercluster, target_contig)
+                        number = 0 # number too high???
+                        for gene in supercluster_genes_list:
+                            #print(f'{number} {gene}')
+                            number = number + 1
                         gene_position = gene_location(gene, target_contig)
                         summary_filename = "Summary.txt"
                         print(f'reaching here')
@@ -432,11 +434,14 @@ def main():
                                 check_gene = ''
                                 for letter in info:
                                     seq = seq + letter
+                                    if copy_gene_name == True and letter == ' ':
+                                        copy_gene_name = False
                                     #if seq == "            ##Genome-Assembly-Data-START##":
                                     if seq == "FEATURES             Location/Qualifiers":
                                         record = False
-                                    if copy_gene_name == True and letter != ' ' or '"':
+                                    if copy_gene_name == True and letter != ' ' and letter != '"':
                                         check_gene = check_gene + letter
+                                        #print(f'what is happening {check_gene}')
                                     if seq == '                     /protein_id=':
                                         should_be_true = True
                                         copy_gene_name = True
@@ -463,17 +468,24 @@ def main():
                                         dna_end = dna_end + letter
                                     if dna_end == 'complement(' and dna_end_record == True:
                                         dna_end = ''
-                                for supercluster_gene in supercluster_genes_list:
-                                    print(f'xx {check_gene}')
-                                    print(f'yyy {supercluster_gene}')
-                                    if check_gene == supercluster_gene:
-                                        supercluster_record = True
-                                    if check_gene != supercluster_gene:
-                                        supercluster_record = False
+                                if len(check_gene) > 0:
+                                    for supercluster_gene in supercluster_genes_list:
+                                        #print(f'xx {check_gene}')
+                                        #print(f'yyy {supercluster_gene}')
+                                        supercluster_gene_test = supercluster_gene.strip()
+                                        check_gene_test = check_gene.strip()
+                                        print(supercluster_gene_test)
+                                        print(check_gene_test)
+                                        if check_gene_test == supercluster_gene_test:
+                                            supercluster_record = True
+                                            print(f'should be recording {gene_name}')
+                                        if check_gene != supercluster_gene:
+                                            supercluster_record = False
                                 if supercluster_record != True and should_be_true == True:
                                     record = False
                                 if record == True or supercluster_record == True:
                                     with open(cluster_genbank, 'a') as file:
+                                        print(f'recorded')
                                         file.write(f'{seq}')
                                 if seq == 'ORIGIN':
                                     dna_collect = True
