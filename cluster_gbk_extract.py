@@ -426,14 +426,31 @@ def main():
                         with open(new_target_contig, "r") as target_contig:
                             print(f'reaching there')
                             record = True
+                            reset = True
+                            test_count = 0 # to delete
+                            supercluster_done = False
+                            was_true = False
                             for info in target_contig:
+                                check_off = False
+                                test_count = test_count + 1 # to delete
                                 dna_write = False
+                                print(f'testing 1 {dna_write}')
                                 seq = ''
                                 should_be_true = False
                                 copy_gene_name = False
                                 check_gene = ''
+                                if reset == True:
+                                    info_record = ''
+                                if seq == '                     /protein_id=' and record == True: # this might not work
+                                    dna_start_record = False
+                                    # dna_end_record = True # turns it off as soon as it turns on!! add a break
                                 for letter in info:
                                     seq = seq + letter
+                                    if reset == False:
+                                        info_record = info_record + letter
+                                    if seq == "     gene            ":
+                                        info_record = seq
+                                        reset = False
                                     if copy_gene_name == True and letter == ' ':
                                         copy_gene_name = False
                                     #if seq == "            ##Genome-Assembly-Data-START##":
@@ -441,21 +458,26 @@ def main():
                                         record = False
                                     if copy_gene_name == True and letter != ' ' and letter != '"':
                                         check_gene = check_gene + letter
-                                        #print(f'what is happening {check_gene}')
                                     if seq == '                     /protein_id=':
                                         should_be_true = True
                                         copy_gene_name = True
+                                        reset = True
                                     if seq == '                     /protein_id=' and record == False:
                                         dna_start_record = True
                                     if seq == '                     /protein_id=' and record == True:
                                         dna_start_record = False
-                                        dna_end_record = True
+                                        #dna_end_record = True # turns it off as soon as it turns on!! add a break
                                     if seq == '     gene            ' and dna_start_record == True:
                                         dna_write = True
                                     if letter == '.' and dna_write == True and dna_start_record == True:
                                         dna_write = False
-                                    if dna_write == True and dna_start_record == True:
+                                        print(f'testing 2 {dna_write}')
+                                    print(f'letter {letter} {dna_start_record} {dna_write}')
+                                    if dna_write == True and dna_start_record == True and letter != ' ':
                                         dna_start = dna_start + letter
+                                        print(f'xxxxx {dna_start}')
+                                    if dna_write == True and dna_start_record == True:
+                                        print(f'yyyyy {dna_start} next {letter}') # herererererere
                                     if dna_start == 'complement(' and dna_start_record == True:
                                         dna_start = ''
                                     if seq == '     gene            ' and dna_end_record == True:
@@ -463,7 +485,8 @@ def main():
                                     if letter == '.' and dna_prepare == True and dna_end_record == True:
                                         dna_write = True
                                     if letter == ' ' or ')' and dna_write == True and dna_end_record == True:
-                                        dna_write = False
+                                        dna_write = False # turning this off made it work but never stop
+                                        print(f'testing 3 {dna_write}')
                                     if dna_write == True and dna_end_record == True:
                                         dna_end = dna_end + letter
                                     if dna_end == 'complement(' and dna_end_record == True:
@@ -474,19 +497,31 @@ def main():
                                         #print(f'yyy {supercluster_gene}')
                                         supercluster_gene_test = supercluster_gene.strip()
                                         check_gene_test = check_gene.strip()
-                                        print(supercluster_gene_test)
-                                        print(check_gene_test)
                                         if check_gene_test == supercluster_gene_test:
                                             supercluster_record = True
-                                            print(f'should be recording {gene_name}')
-                                        if check_gene != supercluster_gene:
+                                            #print(f'should be recording {check_gene_test}')
+                                            check_off = True
+                                            was_true = True
+                                        if check_off != True and check_gene_test != supercluster_gene_test:
                                             supercluster_record = False
                                 if supercluster_record != True and should_be_true == True:
                                     record = False
+                                #print(f'is this working? {record} {supercluster_record}')
+                                if was_true == True and supercluster_record == False:
+                                    info_record = '' # delete this if breaks
+                                if len(check_gene) > 0:
+                                    if check_gene_test == supercluster_gene_test:
+                                        #print(f'here we goooo {test_count}')
+                                        #print(f'is this working? {record} {supercluster_record} {check_gene}')
+                                        if len(info_record) > 0:
+                                            #print(f' info {info_record}')
+                                            with open(cluster_genbank, 'a') as file:
+                                                file.write(info_record)
                                 if record == True or supercluster_record == True:
                                     with open(cluster_genbank, 'a') as file:
-                                        print(f'recorded')
-                                        file.write(f'{seq}')
+                                        #print(f'testing {seq}')
+                                        #file.write(f'{seq}')
+                                        file.write(seq)
                                 if seq == 'ORIGIN':
                                     dna_collect = True
                                     with open(cluster_genbank, 'a') as file:
@@ -497,8 +532,9 @@ def main():
                                 file.write(f'\n')
                             remove_digits = str.maketrans('', '', digits)
                             dna_only = dna.translate(remove_digits)
-                        nucleotide_count = 0
+                        nucleotide_count = 0 #write from gene to capture all the information the delete if wrong / or store into one string and delete if wrong or add if right?
                         region = False
+                        print(f'checking {dna_start} {dna_end}')
                         for nucleotide in dna_only:
                             if nucleotide_count == dna_start:
                                 region = True
