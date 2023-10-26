@@ -177,28 +177,29 @@ def main():
     print('Starting - Supercluster Search')
     print("=" * 25)
 
-    genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
-    fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
+    #genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
+    #fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
-    with open("download_protein_files.sh", 'r') as file:
+    with open("GCA_000010105.1_ASM1010v1_genomic.gbff", 'r') as file:
         today = datetime.datetime.now()
         date_suffix = f"-{today.year}-{today.month}-{today.day}"
         hit_regions_directory = Path(f"hits{date_suffix}")
         hit_regions_directory.mkdir(exist_ok=True)
         count = START_INDEX
-        for genome in range(1, END_INDEX):
+        for genome in range(1, 2):
             print(f'count {count} START')
-            working_genome = ""
+            working_genome = "GCA_000010105.1_ASM1010v1_genomic.gbff"
             supercluster = []
             gene = ""
-            cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
+            #cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
             # cmd = f"head -n {count} download_protein_files.sh"
-            print(cmd)
-            search_genome = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
-            print(f"search_genome cmd: {search_genome}")
-            subprocess.run(search_genome, shell=True)
-            cmd = "gunzip *.gbff.gz"
-            subprocess.run(cmd, shell=True)
+            #print(cmd)
+            #search_genome = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
+            search_genome = 'GCA_000010105.1_ASM1010v1_genomic.gbff'
+            #print(f"search_genome cmd: {search_genome}")
+            #subprocess.run(search_genome, shell=True)
+            #cmd = "gunzip *.gbff.gz"
+            #subprocess.run(cmd, shell=True)
 
             genome_name = ""
             for letter in search_genome:
@@ -216,15 +217,15 @@ def main():
             iteration = 1
             filename = f"{fasta_file_contigs}{os.sep}fasta_rewrite{iteration}.fasta"
 
-            working_genome_zip = f"{working_genome}.gz"
-            print(f"Checking for {working_genome_zip}")
-            if os.path.exists(working_genome_zip):
-                print(f"Removing {working_genome_zip}")
-                os.remove(working_genome_zip)
-            else:
-                print(f"Could not find {working_genome_zip}")
-                print("-" * 25)
-            print("still working")
+            #working_genome_zip = f"{working_genome}.gz"
+            #print(f"Checking for {working_genome_zip}")
+            #if os.path.exists(working_genome_zip):
+            #    print(f"Removing {working_genome_zip}")
+            #    os.remove(working_genome_zip)
+            #else:
+            #    print(f"Could not find {working_genome_zip}")
+            #    print("-" * 25)
+            #print("still working")
             #count = count + 1
 
             if os.path.exists(working_genome):
@@ -365,7 +366,7 @@ def main():
 
                         # current issue is the writing of fasta file stuff only???
 
-                        target_gbk = working_genome_zip[:-3]
+                        target_gbk = 'GCA_000010105.1_ASM1010v1_genomic.gbff'
                         iterations = 0
                         seq = ''
                         save = False
@@ -419,7 +420,7 @@ def main():
                         dna_start = ''
                         dna_end = ''
                         dna_ordered = ''
-                        dna_collect = ''
+                        dna_collect = False
                         dna_prepare = ''
                         dna = ''
                         dna_record = ''
@@ -431,6 +432,7 @@ def main():
                             supercluster_done = False
                             was_true = False
                             start_off = False
+                            end_off = True
                             for info in target_contig:
                                 # have an over-write - once it has recored the DNA line turn it off
                                 check_off = False
@@ -469,45 +471,64 @@ def main():
                                         #dna_end_record = True # turns it off as soon as it turns on!! add a break
                                     if seq == '     gene            ' and dna_start_record == True:
                                         dna_write = True
+                                        if start_off == False:
+                                            dna_start = ''
+                                            #print(f'ooooooooo {dna_start}')
+                                        if start_off == True:
+                                            dna_end_record = True
+                                    if seq == '     gene            ' and dna_end_record == True:
+                                        dna_write = True
+                                        if end_off == False:
+                                            dna_end = ''
+                                            #print(f'ooooooooo {dna_start}')
+                                        dna_prepare = True
                                     if letter == '.' and dna_write == True and dna_start_record == True:
                                         dna_write = False
+                                        if letter == '.' and dna_write == True and dna_end_record == True:
+                                            dna_write = False
                                         #print(f'testing 2 {dna_write}')
-                                        dna_end_record = True # trial here?? Maybe have it turn on later instead?
+                                        #dna_end_record = True # trial here?? Maybe have it turn on later instead?
                                     #print(f'letter {letter} {dna_start_record} {dna_write}')
                                     if dna_write == True and dna_start_record == True and letter != ' ':
                                         if start_off == False:
                                             dna_start = dna_start + letter
-                                        print(f'xxxxx {dna_start} {start_off}')
+                                        #print(f'xxxxx {dna_start} {start_off}')
                                     #if dna_write == True and dna_start_record == True:
                                         #print(f'yyyyy {dna_start} next {letter}') # herererererere
                                     if dna_start == 'complement(' and dna_start_record == True and start_off == False:
-                                        dna_start = ''
-                                    if seq == '     gene            ' and dna_end_record == True:
-                                        dna_prepare = True
+                                        dna_start = '' # takes start from one point too early
+                                    #if seq == '     gene            ' and dna_end_record == True:
+                                    #    dna_prepare = True
                                     #if letter == '.' and dna_prepare == True and dna_end_record == True:
                                         #dna_write = True temporarily turning this off
                                     #if letter == ' ' or ')' and dna_write == True and dna_end_record == True:
                                     #    dna_write = False # turning this off made it work but never stop
-                                    if dna_write == True and dna_end_record == True:
-                                        dna_end = dna_end + letter
+                                    if dna_write == True and dna_end_record == True and letter != ' ':
+                                        if end_off == False:
+                                            dna_end = dna_end + letter
                                     if dna_end == 'complement(' and dna_end_record == True:
                                         dna_end = ''
                                 if len(check_gene) > 0:
+                                    match = False
                                     for supercluster_gene in supercluster_genes_list:
                                         #print(f'xx {check_gene}')
                                         #print(f'yyy {supercluster_gene}')
                                         supercluster_gene_test = supercluster_gene.strip()
                                         check_gene_test = check_gene.strip()
                                         if check_gene_test == supercluster_gene_test:
+                                            match = True
                                             start_off = True  # this is the trial but I think it will work
-                                            print(f'this is working {start_off} {dna_start}')
-                                            print(f'is this working? {record} {supercluster_record} {check_gene}')
+                                            end_off = False
+                                            #print(f'this is working {start_off} {dna_start}')
+                                            #print(f'is this working? {record} {supercluster_record} {check_gene}')
                                             supercluster_record = True
                                             #print(f'should be recording {check_gene_test}')
                                             check_off = True
                                             was_true = True
                                         if check_off != True and check_gene_test != supercluster_gene_test:
                                             supercluster_record = False
+                                    if match == False and end_off == False:
+                                        end_off = True
                                 if supercluster_record != True and should_be_true == True:
                                     record = False
                                 #print(f'is this working? {record} {supercluster_record}')
@@ -520,8 +541,7 @@ def main():
                                             #print(f' info {info_record}')
                                             with open(cluster_genbank, 'a') as file:
                                                 file.write(info_record)
-                                if start_off == False:
-                                    dna_start = ''
+                                #print(f'zzzzzzz {dna_start}')
                                 if record == True or supercluster_record == True:
                                     with open(cluster_genbank, 'a') as file:
                                         #print(f'testing {seq}')
@@ -533,11 +553,12 @@ def main():
                                         file.write(f'ORIGIN\n')
                                 if dna_collect == True and letter != ' ':
                                     dna = dna + letter
+                                    print(f'counting {dna}')
                             with open(cluster_genbank, 'a') as file:
                                 file.write(f'\n')
                             remove_digits = str.maketrans('', '', digits)
                             dna_only = dna.translate(remove_digits)
-                        nucleotide_count = 0 #write from gene to capture all the information the delete if wrong / or store into one string and delete if wrong or add if right?
+                        nucleotide_count = 0 #write from gene to capture all the information then delete if wrong / or store into one string and delete if wrong or add if right?
                         region = False
                         print(f'checking {dna_start} {dna_end}')
                         for nucleotide in dna_only:
