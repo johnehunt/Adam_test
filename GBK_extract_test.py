@@ -414,6 +414,9 @@ def main():
                         cluster_genbank = f'{genome_title}.genbank'
                         open(cluster_genbank, 'w')
                         record = True
+                        first_hit_prepare = True
+                        first_hit_check = False
+                        first_hit = ''
                         supercluster_record = False
                         dna_start_record = False
                         dna_end_record = False
@@ -421,7 +424,7 @@ def main():
                         dna_end = ''
                         dna_ordered = ''
                         dna_collect = False
-                        dna_prepare = ''
+                        dna_prepare = False
                         dna = ''
                         dna_record = ''
                         with open(new_target_contig, "r") as target_contig:
@@ -433,8 +436,10 @@ def main():
                             was_true = False
                             start_off = False
                             end_off = True
+                            y = 0
                             for info in target_contig:
                                 # have an over-write - once it has recored the DNA line turn it off
+                                #reset_first_hit = False
                                 check_off = False
                                 test_count = test_count + 1 # to delete
                                 dna_write = False
@@ -444,13 +449,22 @@ def main():
                                 check_gene = ''
                                 if reset == True:
                                     info_record = ''
+                                #x = 0
+                                #y = y + 1
                                 for letter in info:
                                     seq = seq + letter
+                                    if dna_collect == True and letter != ' ' and letter != '\n':
+                                        dna = dna + letter
                                     if reset == False:
                                         info_record = info_record + letter
+                                    #print(f'helping      {y}      {x}')
+                                    #x = x + 1
                                     if seq == "     gene            ":
                                         info_record = seq
                                         reset = False
+                                        if first_hit_check == False:
+                                            first_hit = ''
+                                            #reset_first_hit = True
                                     if copy_gene_name == True and letter == ' ':
                                         copy_gene_name = False
                                     #if seq == "            ##Genome-Assembly-Data-START##":
@@ -508,6 +522,14 @@ def main():
                                             dna_end = dna_end + letter
                                     if dna_end == 'complement(' and dna_end_record == True:
                                         dna_end = ''
+                                    if seq == 'ORIGIN' and dna_prepare == True:
+                                        dna_collect = True
+                                        #print(f'dna ON {dna_collect} {seq}')
+                                        with open(cluster_genbank, 'a') as file:
+                                            file.write(f'ORIGIN      \n')
+                                    if seq == '//' and dna_prepare == True:
+                                        dna_collect = False
+                                        dna_prepare = False
                                 if len(check_gene) > 0:
                                     match = False
                                     for supercluster_gene in supercluster_genes_list:
@@ -516,9 +538,11 @@ def main():
                                         supercluster_gene_test = supercluster_gene.strip()
                                         check_gene_test = check_gene.strip()
                                         if check_gene_test == supercluster_gene_test:
+                                            first_hit_check = True
                                             match = True
                                             start_off = True  # this is the trial but I think it will work
                                             end_off = False
+                                            dna_prepare = True
                                             #print(f'this is working {start_off} {dna_start}')
                                             #print(f'is this working? {record} {supercluster_record} {check_gene}')
                                             supercluster_record = True
@@ -547,13 +571,22 @@ def main():
                                         #print(f'testing {seq}')
                                         #file.write(f'{seq}')
                                         file.write(seq)
-                                if seq == 'ORIGIN':
-                                    dna_collect = True
-                                    with open(cluster_genbank, 'a') as file:
-                                        file.write(f'ORIGIN\n')
-                                if dna_collect == True and letter != ' ':
-                                    dna = dna + letter
-                                    print(f'counting {dna}')
+                                if first_hit_check == True:
+                                    first_hit_prepare = False
+                                    if len(first_hit) > 0:
+                                        #print(f'record {first_hit}')
+                                        with open(cluster_genbank, 'a') as file:
+                                            file.write(first_hit)
+                                    first_hit = ''
+                                if first_hit_prepare == True:
+                                    first_hit = f'{first_hit}{info}'
+                                #if reset_first_hit == True:
+                                #    first_hit = info
+                                #print(seq)
+                                #print(f'check {dna_collect}')
+                                #if dna_collect == True and letter != ' ' and letter != '\n':
+                                #    dna = dna + seq
+                                    #print(f'whyyyyyy {dna_collect} {seq}')
                             with open(cluster_genbank, 'a') as file:
                                 file.write(f'\n')
                             remove_digits = str.maketrans('', '', digits)
@@ -562,18 +595,24 @@ def main():
                         region = False
                         print(f'checking {dna_start} {dna_end}')
                         for nucleotide in dna_only:
-                            if nucleotide_count == dna_start:
+                            #print(f'counter {nucleotide_count}')
+                            if nucleotide_count == int(dna_start):
+                                #print(f'starting')
                                 region = True
-                            if nucleotide_count == dna_end:
+                            if nucleotide_count == int(dna_end):
+                                #print(f'ending')
                                 region = False
                             if region == True:
                                 dna_record = dna_record + nucleotide
+                                #print(f'copy that')
                             nucleotide_count = nucleotide_count + 1
                         nucleotide_count = 0
+                        print(dna_record)
                         for nucleotide in dna_record:
                             if nucleotide_count == 0 or nucleotide_count % 60 == 0:
                                 marker = nucleotide_count + 1
-                                addition = f'{marker} {nucleotide}'
+                                space = 10 - len(str(marker))
+                                addition = f'{space}{marker} {nucleotide}'
                                 dna_ordered = dna_ordered + addition
                             if nucleotide_count % 10 == 0 and nucleotide_count % 60 != 0:
                                 addition = f' {nucleotide}'
@@ -581,10 +620,13 @@ def main():
                             if nucleotide_count % 10 != 0:
                                 dna_ordered = dna_ordered + nucleotide
                             end_line_check = nucleotide_count + 1
+                            print(f'working? {dna_ordered}')
                             if end_line_check % 60 == 0:
                                 with open(cluster_genbank, 'a') as file:
                                     file.write(f'{dna_ordered}\n')
                                 dna_ordered = ''
+                            nucleotide_count = nucleotide_count + 1
+                        file.write(f'{dna_ordered}\n \\')
 
 
 
