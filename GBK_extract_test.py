@@ -612,7 +612,10 @@ def main():
                             if nucleotide_count == 0 or nucleotide_count % 60 == 0:
                                 marker = nucleotide_count + 1
                                 space = 10 - len(str(marker))
-                                addition = f'{space}{marker} {nucleotide}'
+                                spacer = ''
+                                for gap in range(0, space):
+                                    spacer = spacer + ' '
+                                addition = f'{spacer}{marker} {nucleotide}'
                                 dna_ordered = dna_ordered + addition
                             if nucleotide_count % 10 == 0 and nucleotide_count % 60 != 0:
                                 addition = f' {nucleotide}'
@@ -620,13 +623,14 @@ def main():
                             if nucleotide_count % 10 != 0:
                                 dna_ordered = dna_ordered + nucleotide
                             end_line_check = nucleotide_count + 1
-                            print(f'working? {dna_ordered}')
+                            #print(f'working? {dna_ordered}')
                             if end_line_check % 60 == 0:
                                 with open(cluster_genbank, 'a') as file:
                                     file.write(f'{dna_ordered}\n')
                                 dna_ordered = ''
                             nucleotide_count = nucleotide_count + 1
-                        file.write(f'{dna_ordered}\n \\')
+                        with open(cluster_genbank, 'a') as file:
+                            file.write(f'{dna_ordered}\n \\\')
 
 
 
