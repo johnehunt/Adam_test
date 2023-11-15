@@ -24,12 +24,14 @@ from Bio import SeqIO
 # gunzip *.faa.gz
 
 
+# PeptidaseM15.hmm / PF00389.hmm / PF01427.hmm / PF07478.hmm
+
 print("Defining globals")
 working_genome = ""
 supercluster = []
 gene = ""
 
-START_INDEX = 1
+START_INDEX = 118
 END_INDEX = 1000
 
 def delete_directory(dir_name):
@@ -74,7 +76,7 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="Ribosomal_protein_S12.hmm", # RNA_pol_Rpb1_3.hmm --- for normal supercluster search / LAL.hmm / MftR.hmm / Ribosomal_protein_S12.hmm / SecY.hmm
+            domains="PF07478.hmm", #D-ala-D-ala ligase = occurs only once and not in every genome
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"
@@ -99,7 +101,6 @@ def rnap_search():
             if line.find(target) != -1:
                 gene_line = line_count + 2
                 pos = 0
-                print(line)
                 for word in line:
                     subject = subject + word
                     region.append(pos) # region = [region + pos]
@@ -137,8 +138,8 @@ def supercluster_region(gene, working_genome):
             if len(fasta.seq) < 4000: #150 for R_S10
                 print("Match")
                 rnap = count
-                low_boundary = rnap - 35 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
-                upper_boundary = rnap + 35 # changed from 20
+                low_boundary = rnap - 3 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
+                upper_boundary = rnap + 3 # changed from 20
                 found = True
                 for i in range(low_boundary, upper_boundary):
                     supercluster.append(i)
@@ -381,7 +382,6 @@ def main():
                 target_contig = f"{fasta_file_contigs}{os.sep}fasta_rewrite{contig}.fasta"
                 run_hmmsearch(target=target_contig)
                 gene = rnap_search()
-                #print(f'helping - gene: {gene} working genome: {working_genome} target contig: {target_contig} date suffix: {date_suffix}')
                 if os.path.exists(target_contig):
                     supercluster = supercluster_region(gene, target_contig)
                     if supercluster != False:

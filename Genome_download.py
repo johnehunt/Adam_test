@@ -8,7 +8,7 @@ import shutil
 
 
 START_INDEX = 1
-END_INDEX = 100
+END_INDEX = 4000
 
 def genome_fetch(species="\'Streptomyces.*\'",
                  source="assembly_summary_genbank.txt",

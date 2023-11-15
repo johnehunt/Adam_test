@@ -22,7 +22,7 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 print(f'starting')
-genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt")
+genome_fetch(species="\'Streptomyces.*\'", output="ftp_links.txt") #Rhodococcus
 fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
 

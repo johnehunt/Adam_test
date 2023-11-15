@@ -80,7 +80,7 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="SPASM.hmm", #RNA_pol_Rpb1_3.hmm or tryptophan_halogenase.hmm or LAL.hmm or MftR.hmm or SPASM.hmm
+            domains="PF07478.hmm", #RNA_pol_Rpb1_3.hmm or tryptophan_halogenase.hmm or LAL.hmm or MftR.hmm or SPASM.hmm
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"

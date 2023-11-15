@@ -58,26 +58,32 @@ if __name__ == "__main__":
     x = 0
     for file in antismash_folder.iterdir():
         to_save = remove_empty_dirs(x)
-        #print(to_save)
-        if to_save > 0:
-            genomes_success.append(to_save)
+        genomes_success.append(to_save)
         x = x + 1
 
     antismash_gbff = Path('HTP_antismash/genomes')
     for file in antismash_gbff.iterdir():
         remove_gbff(file)
 
-    print(genomes_success)
+    genomes_success_filtered = list(filter(lambda item: item is not None, genomes_success))
+    genomes_success_len = len(genomes_success_filtered)
+    genomes_success_end = genomes_success_filtered[(genomes_success_len - 1)]
+
     y = 0
-    for file in antismash_folder.iterdir():
-        x = genomes_success[y]
-        folder_itr = f'output_directory{x}'
-        print(folder_itr)
-        target_file = (f'{antismash_folder}/{folder_itr}')
-        if os.path.exists(target_file):
-            manage_output(folder_itr)
-        if os.path.exists(target_file):
-            remove_dirs(folder_itr)
+    #for file in antismash_folder.iterdir():
+    for file in range(0, (genomes_success_end+1)):
+        for pos in range(0, (genomes_success_len)):
+            if y == genomes_success_filtered[pos]:
+                x = genomes_success_filtered[pos]
+                x = x
+                folder_itr = f'output_directory{x}'
+                print(folder_itr)
+                target_file = (f'{antismash_folder}/{folder_itr}')
+                if os.path.exists(target_file):
+                    manage_output(folder_itr)
+                if os.path.exists(target_file):
+                    remove_dirs(folder_itr)
         y = y + 1
+
 
 

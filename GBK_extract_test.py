@@ -6,8 +6,15 @@ import shutil
 from Bio import SeqIO
 from string import digits
 
+
+print("Defining globals")
+working_genome = ""
+supercluster = []
+gene = ""
+
+
 START_INDEX = 1
-END_INDEX = 200
+END_INDEX = 3
 
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
@@ -40,7 +47,7 @@ def fetch_source(source="ftp_links.txt",
 
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="RNA_pol_Rpb1_3.hmm", # RNA_pol_Rpb1_3.hmm --- for normal supercluster search / LAL.hmm / MftR.hmm / Ribosomal_protein_S12.hmm / SecY.hmm
+            domains="Ribosomal_protein_S12.hmm", # RNA_pol_Rpb1_3.hmm --- for normal supercluster search / LAL.hmm / MftR.hmm / Ribosomal_protein_S12.hmm / SecY.hmm
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"
@@ -100,6 +107,7 @@ def supercluster_region(gene, working_genome):
         if gene == fasta.id:
             #print(f' who thought this was a good idea? {len(fasta.seq)}') # delete this
             if len(fasta.seq) < 4000: #150 for R_S10
+                print('Match')
                 rnap = count
                 low_boundary = rnap - 35 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
                 upper_boundary = rnap + 35 # changed from 20
@@ -113,6 +121,8 @@ def supercluster_region(gene, working_genome):
             count = count + 1
     if found == False:
         print("Failed")
+    #if found == True:
+    #    print("Success")
         return found
     return supercluster
 
@@ -167,7 +177,7 @@ def supercluster_genes(supercluster, working_genome):
     return(supercluster_genes)
 
 
-
+# worked on one genome - failing when trying to revert back to highthroughput
 
 def main():
     global working_genome, supercluster, gene
@@ -177,29 +187,29 @@ def main():
     print('Starting - Supercluster Search')
     print("=" * 25)
 
-    #genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
-    #fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
+    genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
+    fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
-    with open("GCA_000010105.1_ASM1010v1_genomic.gbff", 'r') as file:
+    with open("download_protein_files.sh", 'r') as file:
         today = datetime.datetime.now()
         date_suffix = f"-{today.year}-{today.month}-{today.day}"
         hit_regions_directory = Path(f"hits{date_suffix}")
         hit_regions_directory.mkdir(exist_ok=True)
         count = START_INDEX
-        for genome in range(1, 2):
+        for genome in range(1, END_INDEX):
             print(f'count {count} START')
-            working_genome = "GCA_000010105.1_ASM1010v1_genomic.gbff"
+            working_genome = ""
             supercluster = []
             gene = ""
-            #cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
-            # cmd = f"head -n {count} download_protein_files.sh"
-            #print(cmd)
-            #search_genome = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
-            search_genome = 'GCA_000010105.1_ASM1010v1_genomic.gbff'
-            #print(f"search_genome cmd: {search_genome}")
-            #subprocess.run(search_genome, shell=True)
-            #cmd = "gunzip *.gbff.gz"
-            #subprocess.run(cmd, shell=True)
+            cluster_genbank = ''
+            cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
+            #cmd = f"head -n {count} download_protein_files.sh"
+            print(cmd)
+            search_genome = subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout
+            print(f"search_genome cmd: {search_genome}")
+            subprocess.run(search_genome, shell=True)
+            cmd = "gunzip *.gbff.gz"
+            subprocess.run(cmd, shell=True)
 
             genome_name = ""
             for letter in search_genome:
@@ -217,16 +227,16 @@ def main():
             iteration = 1
             filename = f"{fasta_file_contigs}{os.sep}fasta_rewrite{iteration}.fasta"
 
-            #working_genome_zip = f"{working_genome}.gz"
-            #print(f"Checking for {working_genome_zip}")
-            #if os.path.exists(working_genome_zip):
-            #    print(f"Removing {working_genome_zip}")
-            #    os.remove(working_genome_zip)
-            #else:
-            #    print(f"Could not find {working_genome_zip}")
-            #    print("-" * 25)
-            #print("still working")
-            #count = count + 1
+            working_genome_zip = f"{working_genome}.gz"
+            print(f"Checking for {working_genome_zip}")
+            if os.path.exists(working_genome_zip):
+                print(f"Removing {working_genome_zip}")
+                os.remove(working_genome_zip)
+            else:
+                print(f"Could not find {working_genome_zip}")
+                print("-" * 25)
+            print("still working")
+            count = count + 1
 
             if os.path.exists(working_genome):
                 print(working_genome)
@@ -345,6 +355,7 @@ def main():
                 target_contig = f"{fasta_file_contigs}{os.sep}fasta_rewrite{contig}.fasta"
                 run_hmmsearch(target=target_contig)
                 gene = rnap_search()
+                #print(f'helping - gene: {gene} working genome: {working_genome} target contig: {target_contig} date suffix: {date_suffix}')
                 if os.path.exists(target_contig):
                     supercluster = supercluster_region(gene, target_contig)
                     if supercluster != False:
@@ -366,7 +377,7 @@ def main():
 
                         # current issue is the writing of fasta file stuff only???
 
-                        target_gbk = 'GCA_000010105.1_ASM1010v1_genomic.gbff'
+                        target_gbk = working_genome_zip[:-3]
                         iterations = 0
                         seq = ''
                         save = False
@@ -630,50 +641,26 @@ def main():
                                 dna_ordered = ''
                             nucleotide_count = nucleotide_count + 1
                         with open(cluster_genbank, 'a') as file:
-                            file.write(f'{dna_ordered}\n \\\')
+                            end = "\\"
+                            file.write(f'{dna_ordered}\n{end}')
 
+                    if supercluster == False:
+                        if os.path.exists(cluster_genbank):
+                            os.remove(cluster_genbank)
 
+            if os.path.exists(cluster_genbank):
+                shutil.move(cluster_genbank, 'genbank_limited_out') # move genbank file then delete others
+            dir_name = "/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test"
 
+            find_files = os.listdir(dir_name)
+            for file in find_files:
+                if file.endswith(".gbff"):
+                    os.remove(os.path.join(dir_name, file))
+                if file.endswith(".gbk"):
+                    os.remove(os.path.join(dir_name, file))
 
-                        dir_name = "/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test"
-                        dir_name_specified = "/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/" # add [fasta_file_store] ?
-                        for fasta_file in fasta_file_store.iterdir():
-                            fasta_dir = os.path.join(dir_name_specified, fasta_file)
-                            fasta_dir_path = Path(fasta_dir)
-                            print(f'fasta dir = {fasta_dir}')
-                            for contigs in fasta_dir_path.iterdir():
-                                if os.path.exists(contigs):
-                                    os.remove(contigs)
-                            os.rmdir(fasta_dir_path)
-
-                        find_files = os.listdir(dir_name)
-                        for file in find_files:
-                            if file.endswith(".gbff"):
-                                os.remove(os.path.join(dir_name, file))
-                        # put downloaded files into new folder?
-                        with open(summary_filename, 'r') as file:
-                            for line in file:
-                                if line.endswith("NO HITS DETECTED\n"):
-                                    print(line)
-                                    index = line.index(" NO HITS DETECTED")
-                                    filename = line[:index]
-                                    file_to_delete = f"{hit_regions_directory.absolute()}{os.sep}{filename}.gbff"
-                                    if os.path.exists(file_to_delete):
-                                        print(f"Deleting {file_to_delete}")
-                                        os.remove(file_to_delete)
             print(f'count {count} END')
             count = count + 1
-            if os.path.exists(working_genome):
-                os.remove(working_genome)
-            if os.path.exists(new_target_contig):
-                os.remove(new_target_contig)
-            today = datetime.datetime.now()
-            date_suffix = f"-{today.year}-{today.month}-{today.day}"
-            output_directory = Path(f"output{date_suffix}")
-            if os.path.exists(output_directory):
-                for output_to_remove in output_directory.iterdir():
-                    if os.path.exists(output_to_remove):
-                        os.remove(output_to_remove)
 
 
 

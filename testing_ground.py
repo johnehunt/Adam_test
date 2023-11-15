@@ -74,7 +74,7 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="RNA_pol_Rpb1_3.hmm", # RNA_pol_Rpb1_3.hmm --- for normal supercluster search / LAL.hmm / MftR.hmm / Ribosomal_protein_S12.hmm / SecY.hmm
+            domains="Ribosomal_protein_S12.hmm", # RNA_pol_Rpb1_3.hmm --- for normal supercluster search / LAL.hmm / MftR.hmm / Ribosomal_protein_S12.hmm / SecY.hmm
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"
@@ -93,6 +93,7 @@ def rnap_search():
         region = []
         line_count = 0
         for line in file:
+            print(line)
             line_count = line_count + 1
             # print(line)
             target = "    E-value  score  bias    E-value  score  bias    exp  N  Sequence   Description"
@@ -185,7 +186,7 @@ def main():
     print('Starting - Supercluster Search')
     print("=" * 25)
 
-    genome_fetch(species="\'Pantoea.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
+    genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
     fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
     # delete directory when done
