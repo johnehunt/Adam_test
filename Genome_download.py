@@ -7,7 +7,7 @@ import shutil
 #from Bio import SeqIO
 
 
-START_INDEX = 1
+START_INDEX = 983
 END_INDEX = 4000
 
 def genome_fetch(species="\'Streptomyces.*\'",
