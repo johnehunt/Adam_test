@@ -14,7 +14,7 @@ gene = ""
 
 
 START_INDEX = 1
-END_INDEX = 3
+END_INDEX = 5
 
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
@@ -351,6 +351,7 @@ def main():
                     # print(genome_type)
 
             supercluter_copy = f"hits{date_suffix}/{working_genome}.fasta"
+            never_true = True
             for contig in range(1, iteration):
                 target_contig = f"{fasta_file_contigs}{os.sep}fasta_rewrite{contig}.fasta"
                 run_hmmsearch(target=target_contig)
@@ -359,6 +360,7 @@ def main():
                 if os.path.exists(target_contig):
                     supercluster = supercluster_region(gene, target_contig)
                     if supercluster != False:
+                        never_true = False
                         supercluster_genes_list = supercluster_genes(supercluster, target_contig)
                         number = 0 # number too high???
                         for gene in supercluster_genes_list:
@@ -618,7 +620,7 @@ def main():
                                 #print(f'copy that')
                             nucleotide_count = nucleotide_count + 1
                         nucleotide_count = 0
-                        print(dna_record)
+                        #print(dna_record)
                         for nucleotide in dna_record:
                             if nucleotide_count == 0 or nucleotide_count % 60 == 0:
                                 marker = nucleotide_count + 1
@@ -644,9 +646,9 @@ def main():
                             end = "\\"
                             file.write(f'{dna_ordered}\n{end}')
 
-                    if supercluster == False:
-                        if os.path.exists(cluster_genbank):
-                            os.remove(cluster_genbank)
+            if never_true == True:
+                if os.path.exists(cluster_genbank):
+                    os.remove(cluster_genbank)
 
             if os.path.exists(cluster_genbank):
                 shutil.move(cluster_genbank, 'genbank_limited_out') # move genbank file then delete others
