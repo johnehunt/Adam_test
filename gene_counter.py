@@ -80,7 +80,7 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="PF07478.hmm", #RNA_pol_Rpb1_3.hmm or tryptophan_halogenase.hmm or LAL.hmm or MftR.hmm or SPASM.hmm
+            domains="Ribosomal_protein_S12.hmm", #RNA_pol_Rpb1_3.hmm or tryptophan_halogenase.hmm or LAL.hmm or MftR.hmm or SPASM.hmm
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"
@@ -102,7 +102,7 @@ def supercluster_region(gene):
         return found
     return supercluster
 
-genome_fetch(species="\'Streptomyces.*\'", output="ftp_links.txt") # Streptomyces or Rhodococcus
+genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") # Streptomyces or Rhodococcus
 fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
 result_data = "Gene_count.txt"
@@ -119,7 +119,7 @@ def main():
         count = 0
         working_genome = ""
         rpoB = []
-        for genome in range(1, 1500):
+        for genome in range(1, 1000):
             search_genome = ""
             print("working")
             cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"

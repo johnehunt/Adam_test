@@ -1,4 +1,6 @@
 import os
+from pathlib import Path
+import shutil
 
 
 with open("antismash_error.txt", 'r') as file:
@@ -33,6 +35,8 @@ with open("antismash_error.txt", 'r') as file:
 
 directory = '/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/HTP_antismash/genomes'
 files = os.listdir(directory)
+genomes_rerun = Path(f"missed_genomes")
+genomes_rerun.mkdir(exist_ok=True)
 for docs in files:
     word = ''
     name = False
@@ -69,6 +73,7 @@ for docs in files:
                 if genome_edited == True and letter == ' ':
                     genome_name = word_check
             print(word_check)
+            shutil.copy(file_path, genomes_rerun)
     except UnicodeDecodeError:
         print(f"Error reading {file}. Ignoring and moving to the next file.")
         continue

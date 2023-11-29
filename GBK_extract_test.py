@@ -14,7 +14,7 @@ gene = ""
 
 
 START_INDEX = 1
-END_INDEX = 5
+END_INDEX = 25
 
 def delete_directory(dir_name):
     dir_path = Path(dir_name)
@@ -236,7 +236,7 @@ def main():
                 print(f"Could not find {working_genome_zip}")
                 print("-" * 25)
             print("still working")
-            count = count + 1
+            #count = count + 1
 
             if os.path.exists(working_genome):
                 print(working_genome)
@@ -645,7 +645,7 @@ def main():
                         with open(cluster_genbank, 'a') as file:
                             end = "\\"
                             file.write(f'{dna_ordered}\n{end}')
-
+            print(f'failed to find locus = {never_true}')
             if never_true == True:
                 if os.path.exists(cluster_genbank):
                     os.remove(cluster_genbank)

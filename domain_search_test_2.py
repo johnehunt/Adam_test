@@ -85,7 +85,7 @@ def run_multiple_sequences(sequence_filename):
 def run_hmmscan(operation="hmmscan",
                 output="output.txt",
                 options="--noali",
-                domains="test",
+                domains="test", #VanTest
                 protein_file="test.fasta"):
     cmd = f"{operation} -o {output} {options} {domains} {protein_file}"
     print(f"Running -> '{cmd}'")
