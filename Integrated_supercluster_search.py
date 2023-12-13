@@ -205,7 +205,7 @@ def main():
     print('Starting - Supercluster Search')
     print("=" * 25)
 
-    genome_fetch(species="\'Streptomyces.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
+    genome_fetch(species="\'Rhodococcus.*\'", output="ftp_links.txt") #change back to salmonella or Streptomyces or Burkholderia or Nocardiopsis or Planobispora or Mycobacterium or Rhodococcus or Gordonia or Sphaerisporangium or Actinomadura or Kocuria or Corynebacterium or Nocardioides
     fetch_source(source="ftp_links.txt", output="download_protein_files.sh")
 
     # delete directory when done

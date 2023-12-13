@@ -106,7 +106,7 @@ def supercluster_region(gene, working_genome):
     for index, fasta in enumerate(fasta_sequences):
         if gene == fasta.id:
             #print(f' who thought this was a good idea? {len(fasta.seq)}') # delete this
-            if len(fasta.seq) < 4000: #150 for R_S10
+            if len(fasta.seq) < 150: #150 for R_S10
                 print('Match')
                 rnap = count
                 low_boundary = rnap - 35 # changed from 20 (35 for Rhodococcus - 20 for Strep?)
@@ -454,6 +454,10 @@ def main():
                                 # have an over-write - once it has recored the DNA line turn it off
                                 #reset_first_hit = False
                                 check_off = False
+                                have_to_edit = False
+                                move_to_end = False
+                                gene_start = ''
+                                gene_end = ''
                                 test_count = test_count + 1 # to delete
                                 dna_write = False
                                 seq = ''
@@ -543,6 +547,19 @@ def main():
                                     if seq == '//' and dna_prepare == True:
                                         dna_collect = False
                                         dna_prepare = False
+                                    if seq == '     gene            ' and supercluster_record == True:
+                                        have_to_edit = True
+                                        print('editing seq for gbk')
+                                    if seq == '     CDS             ' and supercluster_record == True:
+                                        have_to_edit = True
+                                        print('editing seq for gbk')
+                                    if have_to_edit == True:
+                                        if letter == '.':
+                                            move_to_end = True
+                                        if move_to_end != True:
+                                            gene_start = gene_start + letter
+                                        if move_to_end == True and letter != '.':
+                                            gene_end = gene_end + letter
                                 if len(check_gene) > 0:
                                     match = False
                                     for supercluster_gene in supercluster_genes_list:
@@ -579,11 +596,18 @@ def main():
                                             with open(cluster_genbank, 'a') as file:
                                                 file.write(info_record)
                                 #print(f'zzzzzzz {dna_start}')
+                                #print(f'lets see {seq}          {supercluster_record}')
                                 if record == True or supercluster_record == True:
                                     with open(cluster_genbank, 'a') as file:
                                         #print(f'testing {seq}')
                                         #file.write(f'{seq}')
-                                        file.write(seq)
+                                        if have_to_edit != True:
+                                            file.write(seq)
+                                        if have_to_edit == True:
+                                            gene_start = int(gene_start) - int(dna_start)
+                                            gene_end = int(gene_end) - int(dna_start)
+                                            print(f'{gene_start}..{gene_end}')
+                                            file.write(f'     gene            {gene_start}..{gene_end} \n')
                                 if first_hit_check == True:
                                     first_hit_prepare = False
                                     if len(first_hit) > 0:
