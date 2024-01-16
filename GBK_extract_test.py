@@ -464,6 +464,7 @@ def main():
                                 should_be_true = False
                                 copy_gene_name = False
                                 check_gene = ''
+                                write_line = False
                                 if reset == True:
                                     info_record = ''
                                 #x = 0
@@ -485,8 +486,10 @@ def main():
                                     if copy_gene_name == True and letter == ' ':
                                         copy_gene_name = False
                                     #if seq == "            ##Genome-Assembly-Data-START##":
-                                    if seq == "FEATURES             Location/Qualifiers":
+                                    #if seq == "FEATURES             Location/Qualifiers":
+                                    if seq == '                     /db_xref="':
                                         record = False
+                                        write_line = True
                                     if copy_gene_name == True and letter != ' ' and letter != '"':
                                         check_gene = check_gene + letter
                                     if seq == '                     /protein_id=':
@@ -556,9 +559,9 @@ def main():
                                     if have_to_edit == True:
                                         if letter == '.':
                                             move_to_end = True
-                                        if move_to_end != True:
+                                        if move_to_end != True and letter != '<':
                                             gene_start = gene_start + letter
-                                        if move_to_end == True and letter != '.':
+                                        if move_to_end == True and letter != '.' and letter != ')' and letter != '>':
                                             gene_end = gene_end + letter
                                 if len(check_gene) > 0:
                                     match = False
@@ -597,12 +600,21 @@ def main():
                                                 file.write(info_record)
                                 #print(f'zzzzzzz {dna_start}')
                                 #print(f'lets see {seq}          {supercluster_record}')
+                                if write_line == True:
+                                    file.write(seq)
                                 if record == True or supercluster_record == True:
                                     with open(cluster_genbank, 'a') as file:
                                         #print(f'testing {seq}')
                                         #file.write(f'{seq}')
                                         if have_to_edit != True:
                                             file.write(seq)
+                                        gene_start_two = ''
+                                        for point in gene_start:
+                                            gene_start_two = gene_start_two + point
+                                            if gene_start_two == ' complement(':
+                                                gene_start_two = ''
+                                        if len(gene_start_two) > 0:
+                                            gene_start = gene_start_two
                                         if have_to_edit == True:
                                             gene_start = int(gene_start) - int(dna_start)
                                             gene_end = int(gene_end) - int(dna_start)
