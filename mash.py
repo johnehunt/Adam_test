@@ -6,12 +6,16 @@ from pathlib import Path
 import shutil
 from Bio import SeqIO
 
+file_input = 'query'
+
 # for query cluster
-input_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/GBK")
-output_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/fasta")
+if file_input == 'query':
+    input_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/Partial_cluster_test_gbk") # change to GBK
+    output_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/Partial_cluster_test_fasta") # change to fasta
 # for reference clusters
-input_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/MIBIG")
-output_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/MIBIG_fasta")
+if file_input == 'ref':
+    input_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/Ref_BIGSCAPE_sort/PKS-NRP_Hybrids")
+    output_dir = Path("/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/Ref_PKS_NRPS_fasta")
 # silence as appropriate
 
 
@@ -40,7 +44,8 @@ for gbk in input_dir.glob("*.gbk"):
                 line_copy = ''.join(filter(str.isalpha, line))
             if gene_copy == True:
                 DNA_copy = f'{DNA_copy}{line_copy}\n'
-            if line == "ORIGIN\n":
+            if line.strip() == "ORIGIN":
+                print(f'Copying {gbk_rewrite}')
                 gene_copy = True
             line_count = line_count + 1
         edit = ''

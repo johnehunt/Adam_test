@@ -8,7 +8,7 @@ from pandas import DataFrame
 # how do I process so much data?
 # do all vs reference and all vs all
 
-mash_out = "/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/output.txt"
+mash_out = "/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/output_ref_control.txt"
 with open(mash_out, "r") as file:
     cluster_test = []
     reference_clusters = []
@@ -46,9 +46,9 @@ with open(mash_out, "r") as file:
                 mash_dist = False
                 if len(P_value_copy) < 1:
                     P_value = True
-            if test == "fasta/":
+            if test == "fasta_ref/": # change back to fasta as needed
                 target_copy = True
-            if test == 'MIBIG_fasta/':
+            if test == 'Ref_PKS_NRPS_fasta/': #change this as needed - add code to do it automaatically
                 reference_copy = True
             if letter == "	":
                 if target_copy == True:
@@ -73,4 +73,5 @@ with open(mash_out, "r") as file:
     df = DataFrame({'cluster': cluster_test, 'MIBIG reference': reference_clusters, 'Mash-distance': distance_calc, 'P-value': P_value_calc, 'Matching-hashes': matching_hashes_calc})
     print(df)
     #df.to_excel('test.xlsx', sheet_name='sheet1', index=False)
-    df.to_csv('mash_result.csv', sep='\t')
+    cvs_out = "/Users/u2186477/Documents/PhD/Year 1/Python/cblaster/project_reference/attempt_2/hmmer-3.3.1/Adam_test/mash_trial/mash_result_ref_control.csv"
+    df.to_csv(cvs_out, index=False)

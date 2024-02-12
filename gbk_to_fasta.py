@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 from Bio import SeqIO
 
-files_to_convert = Path(f'gbk_to_convert')
+files_to_convert = Path(f'Partial_cluster_test_gbk') #gbk_to_convert
 print(f'directory {files_to_convert}')
 iteration = 1
 fasta_files = Path(f"{files_to_convert}")
@@ -97,6 +97,7 @@ for gbks in files_to_convert.iterdir():
                 gene_sequence = ""
                 if line_number == 1:
                     #print(line)
+                    genome_type = ''
                     for letter in line:
                         if letter == ',':
                             record = True

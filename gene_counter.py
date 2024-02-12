@@ -80,7 +80,7 @@ def fetch_source(source="ftp_links.txt",
     print("Command completed")
 
 def run_hmmsearch(operation="hmmsearch",
-            domains="PF07993.hmm", #RNA_pol_Rpb1_3.hmm or tryptophan_halogenase.hmm or LAL.hmm or MftR.hmm or SPASM.hmm
+            domains="RNA_pol_Rpb1_3.hmm", #RNA_pol_Rpb1_3.hmm or tryptophan_halogenase.hmm or LAL.hmm or MftR.hmm or SPASM.hmm
             target="GCA_000009765.2_ASM976v2_protein.faa",
             output="rnap.out"):
     cmd = f"{operation} {domains} {target} > {output}"
@@ -119,7 +119,7 @@ def main():
         count = 0
         working_genome = ""
         rpoB = []
-        for genome in range(1, 1000):
+        for genome in range(1, 10):
             search_genome = ""
             print("working")
             cmd = f"cat download_protein_files.sh | head -n {count} | tail -1"
